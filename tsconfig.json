@@ -17,6 +17,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngx-agora": [
+        "dist/ngx-agora"
+      ],
+      "ngx-agora/*": [
+        "dist/ngx-agora/*"
+      ]
+    }
   }
 }
