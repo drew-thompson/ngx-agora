@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { AgoraClient, NgxAgoraService, Stream } from 'ngx-agora';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit {
   protected localStream: Stream;
   protected client: AgoraClient;
 
-  appId = new FormControl('f07033f31b7d436ab62d948320dd0a01');
+  appId = new FormControl(environment.appId);
   channel = new FormControl('123');
   uid: number;
 

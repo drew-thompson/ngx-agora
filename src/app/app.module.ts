@@ -5,11 +5,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AgoraConfig, NgxAgoraModule } from 'ngx-agora';
+
+import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 const agoraConfig: AgoraConfig = {
-  AppID: 'f07033f31b7d436ab62d948320dd0a01'
+  AppID: environment.appId
 };
 
 @NgModule({
