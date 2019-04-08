@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import * as AgoraRTC from 'agora-rtc-sdk';
 
-import { AgoraConfig } from './models/agora-config.model';
 import { AgoraClient } from './models/agora-client.model';
+import { AgoraConfig } from './models/agora-config.model';
 import { Device } from './models/device.model';
 
 @Injectable({
