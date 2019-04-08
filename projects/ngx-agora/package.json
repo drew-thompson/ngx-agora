@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^7.2.0",
-    "@angular/core": "^7.2.0"
+    "@angular/core": "^7.2.0",
+    "agora-rtc-sdk": "^2.5.2"
   },
   "dependencies": {
     "agora-rtc-sdk": "^2.5.2"
