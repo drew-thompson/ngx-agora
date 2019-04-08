@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-agora": {
+    "ngx-agora-demo": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -36,7 +36,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ngx-agora",
+            "outputPath": "dist/ngx-agora-demo",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -81,18 +81,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ngx-agora:build"
+            "browserTarget": "ngx-agora-demo:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ngx-agora:build:production"
+              "browserTarget": "ngx-agora-demo:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ngx-agora:build"
+            "browserTarget": "ngx-agora-demo:build"
           }
         },
         "test": {
@@ -126,7 +126,7 @@
         }
       }
     },
-    "ngx-agora-e2e": {
+    "ngx-agora-demo-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -135,11 +135,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "ngx-agora:serve"
+            "devServerTarget": "ngx-agora-demo:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "ngx-agora:serve:production"
+              "devServerTarget": "ngx-agora-demo:serve:production"
             }
           }
         },
@@ -155,5 +155,5 @@
       }
     }
   },
-  "defaultProject": "ngx-agora"
+  "defaultProject": "ngx-agora-demo"
 }
