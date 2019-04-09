@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "ngx-agora-schematic-ng-add",
-  "title": "Angular Agora ng-add schematic",
+  "id": "ngx-agora-ng-add",
+  "title": "Ngx Agora ng-add schematic",
   "type": "object",
   "properties": {
     "project": {
@@ -10,8 +10,41 @@
       "$default": {
         "$source": "projectName"
       }
+    },
+    "appId": {
+      "type": "string",
+      "description": "The Agora.io application ID that will be used for this project.",
+      "default": "",
+      "x-prompt": {
+        "message": "Paste the Agora AppId from your Agora project page:",
+        "type": "string"
+      }
+    },
+    "version": {
+      "type": "string",
+      "description": "The Agora.io SDK version",
+      "default": "2.5.2",
+      "x-prompt": {
+        "message": "Choose a specific Agora.io SDK version, or \"latest\" for the latest published release:",
+        "type": "list",
+        "items": [{
+            "value": "latest",
+            "label": "Latest Release        [ Preview: https://www.npmjs.com/package/agora-rtc-sdk ]"
+          },
+          {
+            "value": "2.5.2",
+            "label": "2.5.2  [ Preview: https://www.npmjs.com/package/agora-rtc-sdk/v/2.5.2 ]"
+          },
+          {
+            "value": "2.4.1",
+            "label": "2.4.1  [ Preview: https://www.npmjs.com/package/agora-rtc-sdk/v/2.4.1 ]"
+          }
+        ]
+      }
     }
   },
-  "required": [],
+  "required": [
+    "appId"
+  ],
   "additionalProperties": false
 }

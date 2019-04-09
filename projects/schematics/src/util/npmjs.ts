@@ -5,11 +5,11 @@ export interface NpmRegistryPackage {
   version: string;
 }
 
-export function getLatestNodeVersion(packageName: string): Promise<NpmRegistryPackage> {
-  const DEFAULT_VERSION = 'latest';
+export function getNPMPackage(npmPackage: NpmRegistryPackage): Promise<NpmRegistryPackage> {
+  const DEFAULT_VERSION = npmPackage.version !== undefined ? npmPackage.version : 'latest';
 
   return new Promise(resolve => {
-    return get(`http://registry.npmjs.org/${packageName}`, res => {
+    return get(`http://registry.npmjs.org/${npmPackage.name}/${DEFAULT_VERSION}`, res => {
       let rawData = '';
       res.on('data', chunk => (rawData += chunk));
       res.on('end', () => {
@@ -17,12 +17,12 @@ export function getLatestNodeVersion(packageName: string): Promise<NpmRegistryPa
           const response = JSON.parse(rawData);
           const version = (response && response['dist-tags']) || {};
 
-          resolve(buildPackage(response.name || packageName, version.latest));
+          resolve(buildPackage(response.name || npmPackage.name, version.latest));
         } catch (e) {
-          resolve(buildPackage(packageName));
+          resolve(buildPackage(npmPackage.name));
         }
       });
-    }).on('error', () => resolve(buildPackage(packageName)));
+    }).on('error', () => resolve(buildPackage(npmPackage.name)));
   });
 
   function buildPackage(name: string, version: string = DEFAULT_VERSION): NpmRegistryPackage {
