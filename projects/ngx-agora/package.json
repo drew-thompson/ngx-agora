@@ -15,7 +15,7 @@
   "scripts": {
     "test": "test",
     "build": "ng build ngx-agora  && ../../node_modules/.bin/tsc -p schematics/tsconfig.json",
-    "copy:files": "ditto schematics/src/* ../../dist/ngx-agora/schematics/",
+    "copy:files": "ditto schematics/src/ng-add/* ../../dist/ngx-agora/schematics/ng-add/ && ditto schematics/src/util/* ../../dist/ngx-agora/schematics/util/ && ditto schematics/src/collection.json ../../dist/ngx-agora/schematics/",
     "copy:schemas": "ditto schematics/src/*/schema.json ../../dist/ngx-agora/schematics/",
     "copy:collection": "cp schematics/src/collection.json ../../dist/ngx-agora/schematics/collection.json",
     "postbuild": "mkdir ../../dist/ngx-agora/schematics && npm run copy:files && npm run copy:schemas && npm run copy:collection"
