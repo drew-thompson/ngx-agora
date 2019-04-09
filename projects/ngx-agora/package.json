@@ -6,7 +6,32 @@
     "@angular/core": "^7.2.0",
     "agora-rtc-sdk": "^2.5.2"
   },
-  "dependencies": {
+  "description": "Angular 7 wrapper for Agora RTC client (https://www.agora.io/en/)",
+  "main": "ngx-agora.module.ts",
+  "devDependencies": {
     "agora-rtc-sdk": "^2.5.2"
-  }
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drew-thompson/ngx-agora.git"
+  },
+  "keywords": [
+    "angular",
+    "library",
+    "agora",
+    "agora-rtc",
+    "agoraio",
+    "video",
+    "conferencing",
+    "typescript"
+  ],
+  "author": "Drew Thompson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/drew-thompson/ngx-agora/issues"
+  },
+  "homepage": "https://github.com/drew-thompson/ngx-agora#readme"
 }
