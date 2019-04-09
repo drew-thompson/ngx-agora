@@ -1,5 +1,5 @@
 import { chain, Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
-import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
+import { NodePackageInstallTask, RunSchematicTask } from '@angular-devkit/schematics/tasks';
 import { addPackageJsonDependency, NodeDependency, NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { Observable, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
@@ -42,8 +42,9 @@ function installDependencies(): Rule {
 }
 
 function setupProject(options: Schema): Rule {
-  console.log(options);
   return (tree: Tree, _context: SchematicContext) => {
+    const installTaskId = _context.addTask(new NodePackageInstallTask());
+    _context.addTask(new RunSchematicTask('ng-add-setup-project', options), [installTaskId]);
     return tree;
   };
 }
