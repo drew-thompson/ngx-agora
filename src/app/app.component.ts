@@ -10,18 +10,38 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  protected localStream: Stream;
-  protected client: AgoraClient;
+  private localStream: Stream;
+  private client: AgoraClient;
 
-  appId = new FormControl(environment.appId);
+  /**
+   * App ID used when connecting to the Agora.io servers
+   */
+  appId: FormControl = new FormControl(environment.appId);
+  /**
+   * Channel (meeting room) within the Agora app to join
+   */
   channel = new FormControl('123');
+  /**
+   * Generated user ID that is attached to the local client when joining a meeting room
+   */
   uid: number;
 
+  /**
+   * All the IDs of other users that have joined the call
+   */
   remoteCalls: string[] = [];
+  /**
+   * Whether the local client has tuned in to the Agora meeting room
+   */
   connected = false;
+  /**
+   * Whether the local client's A/V stream has been published to the remote meeting room
+   */
+  published = false;
 
   constructor(private agoraService: NgxAgoraService) {
     this.uid = Math.floor(Math.random() * 100);
+
     this.agoraService.createClient('rtc');
     this.client = this.agoraService.client;
   }
@@ -45,14 +65,16 @@ export class AppComponent implements OnInit {
     this.client.unpublish(this.localStream, error => {
       console.error(error);
     });
-    this.connected = false;
+    this.published = false;
   }
 
   leave(): void {
     this.client.leave(
       () => {
-        console.log('Leavel channel successfully');
+        console.log('Left the channel successfully');
         this.connected = false;
+        this.published = false;
+        this.remoteCalls = [];
       },
       err => {
         console.log('Leave channel failed');
@@ -68,6 +90,7 @@ export class AppComponent implements OnInit {
       () => {
         console.log('getUserMedia successfully');
         this.localStream.play('agora_local');
+        this.connected = true;
         this.assignHandlers();
         console.warn(this.localStream);
       },
@@ -77,7 +100,7 @@ export class AppComponent implements OnInit {
 
   private assignHandlers(): void {
     this.client.on('stream-published', evt => {
-      this.connected = true;
+      this.published = true;
       console.log('Publish local stream successfully');
     });
     // The user has granted access to the camera and mic.
@@ -106,7 +129,6 @@ export class AppComponent implements OnInit {
 
     this.client.on('stream-added', evt => {
       const stream = evt.stream;
-      console.warn(stream);
       this.client.subscribe(stream, err => {
         console.log('Subscribe stream failed', err);
       });
@@ -130,10 +152,9 @@ export class AppComponent implements OnInit {
 
     this.client.on('peer-leave', evt => {
       const stream = evt.stream;
-      console.warn('Peer Leave');
       if (stream) {
         stream.stop();
-        this.remoteCalls = this.remoteCalls.filter(call => call === `${this.getRemoteId(stream)}`);
+        this.remoteCalls = this.remoteCalls.filter(call => call !== `${this.getRemoteId(stream)}`);
         console.log(`${evt.uid} left from this channel`);
       }
     });

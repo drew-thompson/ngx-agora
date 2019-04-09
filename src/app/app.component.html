@@ -15,18 +15,28 @@
 
 
     <div class="col-6">
-      <button mat-button color="primary" (click)="join()">Join Channel</button>
-      <button mat-button color="primary" (click)="publish()">Publish Local Stream</button>
-      <button mat-button color="primary" (click)="unpublish()">Unpublish Local Stream</button>
-      <button mat-button color="accent" (click)="leave()">Leave</button>
+      <div class="row h-100">
+        <div class="col-12">
+          <button mat-button color="primary" (click)="join()">Join Channel</button>
+          <button mat-button color="primary" (click)="publish()">Publish Local Stream</button>
+          <button mat-button color="primary" (click)="unpublish()">Unpublish Local Stream</button>
+          <button mat-button color="accent" (click)="leave()">Leave</button>
+        </div>
+        <div class="col-12">
+          User id: {{ uid }}
+        </div>
+      </div>
     </div>
-    <h2 class="col-6">Connected: {{ connected }}</h2>
+
+    <div class="col-6">
+      <div class="row">
+        <h2 class="col-12">Connected: {{ connected }}</h2>
+        <h2 class="col-12">Published: {{ published }}</h2>
+      </div>
+    </div>
 
     <div class="col-12">
-      <div class="row">
-        <span class="col">{{ remoteCalls | json }}</span>
-        <span class="col">User id: {{ uid }}</span>
-      </div>
+      {{ remoteCalls | json }}
     </div>
   </article>
 
