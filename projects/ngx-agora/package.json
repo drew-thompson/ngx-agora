@@ -1,6 +1,7 @@
 {
   "name": "ngx-agora",
   "version": "0.0.1",
+  "schematics": "./schematics/src/collection.json",
   "peerDependencies": {
     "@angular/common": "^7.2.0",
     "@angular/core": "^7.2.0",
@@ -12,7 +13,11 @@
     "agora-rtc-sdk": "^2.5.2"
   },
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "build": "../../node_modules/.bin/tsc -p schematics/tsconfig.json",
+    "copy:schemas": "ditto schematics/src/*/schema.json ../../dist/ngx-agora/",
+    "copy:collection": "cp schematics/src/collection.json ../../dist/ngx-agora/schematics/collection.json",
+    "postbuild": "mkdir ../../dist/ngx-agora/schematics npm run copy:schemas && npm run copy:collection"
   },
   "repository": {
     "type": "git",
