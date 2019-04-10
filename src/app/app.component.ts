@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   /**
    * App ID used when connecting to the Agora.io servers
    */
-  appId: FormControl = new FormControl(environment.appId);
+  appId: FormControl = new FormControl((environment as any).agora ? (environment as any).agora.appId : '');
   /**
    * Channel (meeting room) within the Agora app to join
    */
