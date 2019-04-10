@@ -6,7 +6,7 @@ export interface NpmRegistryPackage {
 }
 
 export function getNPMPackage(npmPackage: NpmRegistryPackage): Promise<NpmRegistryPackage> {
-  const DEFAULT_VERSION = npmPackage.version !== undefined ? npmPackage.version : 'latest';
+  const DEFAULT_VERSION = npmPackage.version !== undefined ? npmPackage.version : '';
 
   return new Promise(resolve => {
     return get(`http://registry.npmjs.org/${npmPackage.name}/${DEFAULT_VERSION}`, res => {
