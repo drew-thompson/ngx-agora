@@ -74,20 +74,17 @@ function importEnvironmentIntoRootModule(options: Schema): Rule {
     const envPath = getProjectEnvironmentFile(project);
     const sourceFile = readIntoSourceFile(tree, appModulePath);
 
-    context.logger.info(sourceFile.text);
     if (isImported(sourceFile, IMPORT_IDENTIFIER, envPath)) {
       context.logger.info('Your environment file is already imported in app.module, skipping import...');
       return tree;
     }
 
-    context.logger.info('Passed environment import check');
     const change = insertImport(sourceFile, appModulePath, IMPORT_IDENTIFIER, envPath.replace(/\.ts$/, '')) as InsertChange;
 
     const recorder = tree.beginUpdate(appModulePath);
     recorder.insertLeft(change.pos, change.toAdd);
     tree.commitUpdate(recorder);
 
-    context.logger.info(sourceFile.text);
     context.logger.info('Imported environment into app.module.');
     return tree;
   };
