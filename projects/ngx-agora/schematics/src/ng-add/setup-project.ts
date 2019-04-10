@@ -59,7 +59,7 @@ function addEnvironmentConfig(options: Schema): Rule {
     }
     tree.commitUpdate(recorder);
 
-    context.logger.info('✅️ Environment configuration');
+    context.logger.info('Configured the base evironment file with the provided API key.');
     return tree;
   };
 }
@@ -79,13 +79,13 @@ function addNgxAgoraModule(options: Schema): Rule {
     // add NgModule to root NgModule imports
     addModuleImportToRootModule(tree, MODULE_NAME, 'ngx-agora', project);
 
-    context.logger.info('✅️ Import NgxAgoraModule into root module');
+    context.logger.info('Imported the NgxAgoraModule, preconfigured, into app.module.');
     return tree;
   };
 }
 
 function importEnvironemntIntoRootModule(options: Schema): Rule {
-  return (tree: Tree, context: SchematicContext) => {
+  return (tree: Tree, _context: SchematicContext) => {
     const IMPORT_IDENTIFIER = 'environment';
     const workspace = getWorkspace(tree);
     const project = getProjectFromWorkspace(workspace, options.project);
@@ -93,8 +93,8 @@ function importEnvironemntIntoRootModule(options: Schema): Rule {
     const envPath = getProjectEnvironmentFile(project);
     const sourceFile = readIntoSourceFile(tree, appModulePath);
 
-    if (isImported(sourceFile as any, IMPORT_IDENTIFIER, envPath)) {
-      context.logger.info('✅️ The environment is already imported in the root module');
+    if (isImported(sourceFile, IMPORT_IDENTIFIER, envPath)) {
+      _context.logger.info('Your environment file is already imported in app.module, skipping import...');
       return tree;
     }
 
@@ -105,11 +105,12 @@ function importEnvironemntIntoRootModule(options: Schema): Rule {
       envPath.replace(/\.ts$/, '')
     ) as InsertChange;
 
+    _context.logger.info(`${change.path} ${change.pos} ${change.order} ${change.description}`);
     const recorder = tree.beginUpdate(appModulePath);
     recorder.insertLeft(change.pos, change.toAdd);
     tree.commitUpdate(recorder);
 
-    context.logger.info('✅️ Import environment into root module');
+    _context.logger.info('Imported environment into app.module.');
     return tree;
   };
 }
