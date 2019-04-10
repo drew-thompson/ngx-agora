@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import * as AgoraRTC from 'agora-rtc-sdk';
 
-import { AgoraClient } from './models/agora-client.model';
-import { AgoraConfig } from './models/agora-config.model';
-import { Device } from './models/device.model';
+import { AgoraClient } from './data/models/agora-client.model';
+import { AgoraConfig } from './data/models/agora-config.model';
+import { Device } from './data/models/device.model';
 
 @Injectable({
   providedIn: 'root'

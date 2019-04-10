@@ -1,7 +1,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AgoraConfig } from './models/agora-config.model';
+import { AgoraConfig } from './data/models/agora-config.model';
 import { NgxAgoraComponent } from './ngx-agora.component';
 import { NgxAgoraService } from './ngx-agora.service';
 

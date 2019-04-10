@@ -24,7 +24,7 @@ export interface Stream {
   isAudioOn: any; // function
   isVideoOn: any; // function
   local: boolean;
-  lowStream: any; //?
+  lowStream: any; // ?
   mirror: boolean;
   muteAudio: any; // ?
   muteVideo: any; // ?
@@ -48,7 +48,7 @@ export interface Stream {
   streamId: number;
   unmuteAudio: any; // ?
   unmuteVideo: any; // ?
-  url: any; //?
+  url: any; // ?
   video: boolean;
   videoEnabled: boolean;
   videoHeight: number;
