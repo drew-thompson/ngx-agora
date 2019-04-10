@@ -16,7 +16,7 @@
       "description": "The Agora.io application ID that will be used for this project.",
       "default": "",
       "x-prompt": {
-        "message": "Paste the Agora AppId from your Agora project page:",
+        "message": "Enter the Agora AppId you will be using (from your Agora project page):",
         "type": "string"
       }
     },
