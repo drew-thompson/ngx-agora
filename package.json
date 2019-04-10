@@ -10,8 +10,8 @@
     "e2e": "ng e2e",
     "link": "npm link dist/ngx-agora",
     "ng-add": "ng g ngx-agora:ng-add",
-    "schematics": "cd projects/ngx-agora && npm run build && cd ../../ && npm run link && npm run ng-add",
-    "release": "standard-version"
+    "schematics": "cd projects/ngx-agora && npm run build && cd ../../ && npm run link",
+    "release": "cd projects/ngx-agora && npm run build && standard-version && cd ../../ && git push && cd dist/ngx-agora"
   },
   "private": true,
   "dependencies": {
