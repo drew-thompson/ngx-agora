@@ -66,7 +66,7 @@ function addEnvironmentConfig(options: Schema): Rule {
 
 function addNgxAgoraModule(options: Schema): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    const MODULE_NAME = 'NgxAgoraModule.forRoot(environment.agora.appId)';
+    const MODULE_NAME = 'NgxAgoraModule.forRoot({ AppId: environment.agora.appId })';
     const workspace = getWorkspace(tree);
     const project = getProjectFromWorkspace(workspace, options.project);
     const appModulePath = getAppModulePath(tree, getProjectMainFile(project));
