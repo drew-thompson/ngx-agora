@@ -17,7 +17,11 @@ export default function(options: Schema): Rule {
 
 function addPackageJsonDependencies(options: Schema): Rule {
   return (tree: Tree, _context: SchematicContext): Observable<Tree> => {
-    return of({ name: 'agora-rtc-sdk', version: options.version }, { name: 'ngx-agora', version: undefined }).pipe(
+    return of(
+      { name: '@angular/cdk', version: undefined },
+      { name: 'agora-rtc-sdk', version: options.version },
+      { name: 'ngx-agora', version: undefined }
+    ).pipe(
       mergeMap(pkg => getNPMPackage(pkg as NpmRegistryPackage)),
       map((npmRegistryPackage: NpmRegistryPackage) => {
         const nodeDependency: NodeDependency = {
