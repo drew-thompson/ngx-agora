@@ -3,6 +3,7 @@ import { NodePackageInstallTask, RunSchematicTask } from '@angular-devkit/schema
 import { addPackageJsonDependency, NodeDependency, NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { Observable, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
+
 import { getNPMPackage, NpmRegistryPackage } from '../util/npmjs';
 import { Schema } from './schema';
 
@@ -26,7 +27,6 @@ function addPackageJsonDependencies(options: Schema): Rule {
           overwrite: false
         };
         addPackageJsonDependency(tree, nodeDependency);
-        _context.logger.info('✅️ Added dependency');
         return tree;
       })
     );
@@ -36,7 +36,6 @@ function addPackageJsonDependencies(options: Schema): Rule {
 function installDependencies(): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     _context.addTask(new NodePackageInstallTask());
-    _context.logger.debug('✅️ Dependencies installed');
     return tree;
   };
 }
