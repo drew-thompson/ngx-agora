@@ -701,4 +701,8 @@ export interface Stream {
    * - `false`: Failure. Possible reasons include no video, stream not initialized, and video track already enabled.
    */
   unmuteVideo: () => void;
+  /**
+   * Not mentioned in Agora.io official docs, may be inherited DOM function.
+   */
+  addEventListener: (t: string, n: any) => any;
 }
