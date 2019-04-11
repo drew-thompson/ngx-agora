@@ -1,11 +1,12 @@
-import { InjectStreamConfig } from './inject-stream-config.model';
+import { AgoraEvent } from '../enums/agora-event.enum';
 import { ConnectionState } from '../types/connection-state.type';
+import { InjectStreamConfig } from './inject-stream-config.model';
+import { LiveTranscoding } from './live-transcoding.model';
 import { LocalAudioStatsMap } from './local-audio-stats-map.model';
 import { LocalVideoStatsMap } from './local-video-stats-map.model';
-import { AgoraEvent } from '../enums/agora-event.enum';
 import { Stream } from './stream.model';
-import { LiveTranscoding } from './live-transcoding.model';
 import { SubscribeOptions } from './subscribe-options.model';
+import { TurnServer } from './turn-server.model';
 
 /**
  * The Client object returned by the [createClient](https://docs.agora.io/en/Video/API%20Reference/web/globals.html#createclient)
@@ -480,14 +481,7 @@ export interface AgoraClient {
    *
    * @see [setTurnServer](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#setturnserver)
    */
-  setTurnServer: (turnServer: {
-    forceTurn?: boolean;
-    password: string;
-    tcpport?: string;
-    turnServerURL: string;
-    udpport: string;
-    username: string;
-  }) => void;
+  setTurnServer: (turnServer: TurnServer) => void;
   /**
    * This method starts a live stream.
    *

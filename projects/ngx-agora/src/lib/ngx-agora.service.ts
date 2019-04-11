@@ -4,6 +4,7 @@ import * as AgoraRTC from 'agora-rtc-sdk';
 import { AgoraClient } from './data/models/agora-client.model';
 import { AgoraConfig } from './data/models/agora-config.model';
 import { Device } from './data/models/device.model';
+import { ClientConfig } from './data/models/exports';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,8 @@ export class NgxAgoraService {
     return AgoraRTC.checkSystemRequirements();
   }
 
-  createClient(mode: 'interop' | 'rtc' = 'interop', codec: string = 'vp8') {
-    this.client = AgoraRTC.createClient({ mode, codec });
+  createClient(config: ClientConfig): void {
+    this.client = AgoraRTC.createClient(config);
     this.client.init(this.config.AppID);
   }
 

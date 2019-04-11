@@ -1,6 +1,7 @@
 export * from './agora-client.model';
 export * from './agora-config.model';
 export * from './device.model';
+export * from './client-config.model';
 export * from './inject-stream-config.model';
 export * from './live-transcoding.model';
 export * from './local-audio-stats-map.model';
@@ -11,3 +12,4 @@ export * from './media-device-info.model';
 export * from './stream.model';
 export * from './subscribe-options.model';
 export * from './transcoding-user.model';
+export * from './turn-server.model';

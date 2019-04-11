@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
   constructor(private agoraService: NgxAgoraService) {
     this.uid = Math.floor(Math.random() * 100);
 
-    this.agoraService.createClient('rtc');
+    this.agoraService.createClient({ mode: 'rtc', codec: 'h264' });
     this.client = this.agoraService.client;
   }
 
