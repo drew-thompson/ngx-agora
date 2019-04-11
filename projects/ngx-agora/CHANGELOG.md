@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.3.0](https://github.com/drew-thompson/ngx-agora/compare/v1.2.0...v1.3.0) (2019-04-11)
+
+
+### Features
+
+* expose models in export files to public api ([b90337f](https://github.com/drew-thompson/ngx-agora/commit/b90337f))
+* **models:** add deep modeling for the Agora.io Client ([0a9a1f2](https://github.com/drew-thompson/ngx-agora/commit/0a9a1f2))
+
+
+
 # [1.2.0](https://github.com/drew-thompson/ngx-agora/compare/v1.1.1...v1.2.0) (2019-04-10)
 
 
