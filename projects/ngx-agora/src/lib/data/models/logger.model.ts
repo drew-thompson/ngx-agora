@@ -9,6 +9,11 @@ export interface Logger {
   WARNING: LogLevel.Warning;
   ERROR: LogLevel.Error;
   NONE: LogLevel.None;
+  debug: (message: string) => void;
+  error: (message: string) => void;
+  info: (message: string) => void;
+  warning: (message: string) => void;
+
   /**
    * This method disables log upload.
    *

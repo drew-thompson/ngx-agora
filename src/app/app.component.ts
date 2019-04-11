@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
   }
 
   join(): void {
-    this.localStream = this.agoraService.createStream(this.uid, true, null, null, true, false);
+    this.localStream = this.agoraService.createStream({ streamID: this.uid, audio: true, video: true, screen: false });
     this.init();
 
     this.client.join(null, this.channel.value, this.uid);
@@ -69,20 +69,21 @@ export class AppComponent implements OnInit {
   }
 
   leave(): void {
-    this.client.leave(
-      () => {
-        console.log('Left the channel successfully');
-        this.connected = false;
-        this.published = false;
-        this.remoteCalls = [];
-      },
-      err => {
-        console.log('Leave channel failed');
-      }
-    );
-    this.client.unpublish(this.localStream, error => {
-      console.error(error);
-    });
+    if (this.connected) {
+      this.client.leave(
+        () => {
+          console.log('Left the channel successfully');
+          this.connected = false;
+          this.published = false;
+          this.remoteCalls = [];
+        },
+        err => {
+          console.log('Leave channel failed');
+        }
+      );
+    } else {
+      this.agoraService.AgoraRTC.Logger.warning('Local client is not connected to channel.');
+    }
   }
 
   protected init(): void {

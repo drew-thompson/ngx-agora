@@ -1,60 +1,54 @@
 import { Inject, Injectable } from '@angular/core';
-import * as AgoraRTC from 'agora-rtc-sdk';
+import * as agoraSDK from 'agora-rtc-sdk';
 
 import { AgoraClient } from './data/models/agora-client.model';
 import { AgoraConfig } from './data/models/agora-config.model';
-import { Device } from './data/models/device.model';
-import { ClientConfig } from './data/models/exports';
+import { AgoraRTC, ClientConfig, MediaDeviceInfo, StreamSpec } from './data/models/exports';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NgxAgoraService {
+  private static AgoraRTC: AgoraRTC = agoraSDK;
+
   client: AgoraClient;
-  audioDevices: Device[];
-  videoDevices: Device[];
+  audioDevices: MediaDeviceInfo[];
+  videoDevices: MediaDeviceInfo[];
+  AgoraRTC: AgoraRTC = NgxAgoraService.AgoraRTC;
 
-  constructor(@Inject('config') private config: AgoraConfig) {}
-
-  checkSystemRequirements() {
-    return AgoraRTC.checkSystemRequirements();
-  }
-
-  createClient(config: ClientConfig): void {
-    this.client = AgoraRTC.createClient(config);
-    this.client.init(this.config.AppID);
-  }
-
-  createStream(
-    streamID: any,
-    audio: boolean,
-    cameraId: string = this.videoDevices[0].deviceId,
-    microphoneId: string = this.audioDevices[0].deviceId,
-    video: boolean,
-    screen: boolean
-  ) {
-    return AgoraRTC.createStream({ streamID, audio, cameraId, microphoneId, video, screen });
-  }
-
-  logger(type: 'error' | 'warning' | 'info' | 'debug', message: string): void {
-    switch (type) {
-      case 'warning':
-        AgoraRTC.Logger.warning(message);
-        break;
-      case 'info':
-        AgoraRTC.Logger.info(message);
-        break;
-      case 'debug':
-        AgoraRTC.Logger.debug(message);
-        break;
-      case 'error':
-      default:
-        AgoraRTC.Logger.error(message);
+  constructor(@Inject('config') private config: AgoraConfig) {
+    if (!this.checkSystemRequirements()) {
+      this.AgoraRTC.Logger.error('Web RTC is not supported in this browser');
+    } else {
+      this.collectDevices();
     }
   }
 
-  private getDevices(): void {
-    AgoraRTC.getDevices((devices: Device[]) => {
+  checkSystemRequirements(): boolean {
+    return this.AgoraRTC.checkSystemRequirements();
+  }
+
+  createClient(config: ClientConfig): void {
+    this.client = this.AgoraRTC.createClient(config);
+    this.client.init(this.config.AppID);
+  }
+
+  createStream(spec: StreamSpec) {
+    const defaultMic = this.audioDevices[0].deviceId;
+    const defaultCamera = this.videoDevices[0].deviceId;
+
+    if (!spec.microphoneId && defaultMic) {
+      spec.microphoneId = defaultMic;
+    }
+    if (!spec.cameraId && defaultCamera) {
+      spec.cameraId = spec.cameraId || defaultCamera;
+    }
+
+    return this.AgoraRTC.createStream(spec);
+  }
+
+  private collectDevices(): void {
+    this.AgoraRTC.getDevices((devices: MediaDeviceInfo[]) => {
       const audioDevices = devices.filter(device => {
         return device.kind === 'audioinput' && device.deviceId !== 'default';
       });

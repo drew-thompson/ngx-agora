@@ -174,5 +174,5 @@ export interface StreamSpec {
    * If you use a video source created by the Canvas API, re-draw on the canvas every one second
    * when the drawing is still to keep the video publishing.
    */
-  videoSource: MediaStreamTrack;
+  videoSource?: MediaStreamTrack;
 }
