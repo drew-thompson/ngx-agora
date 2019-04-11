@@ -4,6 +4,9 @@ import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/ma
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { NgxAgoraModule } from 'ngx-agora';
+
+import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -16,7 +19,8 @@ import { AppComponent } from './app.component';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    NgxAgoraModule.forRoot({ AppID: environment.agora.appId })
   ],
   providers: [],
   bootstrap: [AppComponent]

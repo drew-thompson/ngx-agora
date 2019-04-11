@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-import { AgoraClient, NgxAgoraService, Stream } from 'ngx-agora';
+import { AgoraClient, NgxAgoraService, Stream, AgoraEvent } from 'ngx-agora';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -99,7 +99,7 @@ export class AppComponent implements OnInit {
   }
 
   private assignHandlers(): void {
-    this.client.on('stream-published', evt => {
+    this.client.on(AgoraEvent.LocalStreamPublished, evt => {
       this.published = true;
       console.log('Publish local stream successfully');
     });
@@ -112,7 +112,7 @@ export class AppComponent implements OnInit {
       console.log('accessDenied');
     });
 
-    this.client.on('error', err => {
+    this.client.on(AgoraEvent.Error, err => {
       console.log('Got error msg:', err.reason);
       if (err.reason === 'DYNAMIC_KEY_TIMEOUT') {
         this.client.renewChannelKey(
@@ -127,14 +127,14 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.client.on('stream-added', evt => {
+    this.client.on(AgoraEvent.RemoteStreamAdded, evt => {
       const stream = evt.stream;
-      this.client.subscribe(stream, err => {
+      this.client.subscribe(stream, { audio: true, video: true }, err => {
         console.log('Subscribe stream failed', err);
       });
     });
 
-    this.client.on('stream-subscribed', evt => {
+    this.client.on(AgoraEvent.RemoteStreamSubscribed, evt => {
       const stream = evt.stream;
       const id = this.getRemoteId(stream);
       if (!this.remoteCalls.length) {
@@ -143,14 +143,14 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.client.on('stream-removed', evt => {
+    this.client.on(AgoraEvent.RemoteStreamRemoved, evt => {
       const stream = evt.stream;
       stream.stop();
       this.remoteCalls = [];
       console.log(`Remote stream is removed ${stream.getId()}`);
     });
 
-    this.client.on('peer-leave', evt => {
+    this.client.on(AgoraEvent.PeerLeave, evt => {
       const stream = evt.stream;
       if (stream) {
         stream.stop();
