@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-import { AgoraClient, NgxAgoraService, Stream, AgoraEvent } from 'ngx-agora';
+import { AgoraClient, ClientEvent, NgxAgoraService, Stream, StreamEvent } from 'ngx-agora';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -100,20 +100,20 @@ export class AppComponent implements OnInit {
   }
 
   private assignHandlers(): void {
-    this.client.on(AgoraEvent.LocalStreamPublished, evt => {
+    this.client.on(ClientEvent.LocalStreamPublished, evt => {
       this.published = true;
       console.log('Publish local stream successfully');
     });
     // The user has granted access to the camera and mic.
-    this.localStream.on('accessAllowed', () => {
+    this.localStream.on(StreamEvent.MediaAccessAllowed, () => {
       console.log('accessAllowed');
     });
     // The user has denied access to the camera and mic.
-    this.localStream.on('accessDenied', () => {
+    this.localStream.on(StreamEvent.MediaAccessDenied, () => {
       console.log('accessDenied');
     });
 
-    this.client.on(AgoraEvent.Error, err => {
+    this.client.on(ClientEvent.Error, err => {
       console.log('Got error msg:', err.reason);
       if (err.reason === 'DYNAMIC_KEY_TIMEOUT') {
         this.client.renewChannelKey(
@@ -128,14 +128,14 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.client.on(AgoraEvent.RemoteStreamAdded, evt => {
+    this.client.on(ClientEvent.RemoteStreamAdded, evt => {
       const stream = evt.stream;
       this.client.subscribe(stream, { audio: true, video: true }, err => {
         console.log('Subscribe stream failed', err);
       });
     });
 
-    this.client.on(AgoraEvent.RemoteStreamSubscribed, evt => {
+    this.client.on(ClientEvent.RemoteStreamSubscribed, evt => {
       const stream = evt.stream;
       const id = this.getRemoteId(stream);
       if (!this.remoteCalls.length) {
@@ -144,14 +144,14 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.client.on(AgoraEvent.RemoteStreamRemoved, evt => {
+    this.client.on(ClientEvent.RemoteStreamRemoved, evt => {
       const stream = evt.stream;
       stream.stop();
       this.remoteCalls = [];
       console.log(`Remote stream is removed ${stream.getId()}`);
     });
 
-    this.client.on(AgoraEvent.PeerLeave, evt => {
+    this.client.on(ClientEvent.PeerLeave, evt => {
       const stream = evt.stream;
       if (stream) {
         stream.stop();
