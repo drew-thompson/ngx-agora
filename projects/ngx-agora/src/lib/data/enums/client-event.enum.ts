@@ -1,12 +1,12 @@
 /**
- * Events that the Agora.io SDK `on()` function recognizes.
+ * Events that the Agora.io SDK `client.on()` function recognizes.
  *
  * If the API changes faster than the library, a quick type override can help bypass compiler errors:
  *
  * @example
- * this.ngxAgoraService.client.on('new-event' as AgoraEvent, (data) => {})
+ * this.ngxAgoraService.client.on('new-event' as ClientEvent, (data) => {})
  */
-export enum AgoraEvent {
+export enum ClientEvent {
   LocalStreamPublished = 'stream-published',
   RemoteStreamAdded = 'stream-added',
   RemoteStreamRemoved = 'stream-removed',

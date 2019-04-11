@@ -1,4 +1,4 @@
-import { AgoraEvent } from '../enums/agora-event.enum';
+import { ClientEvent } from '../enums/client-event.enum';
 import { ConnectionState } from '../types/connection-state.type';
 import { InjectStreamConfig } from './inject-stream-config.model';
 import { LiveTranscoding } from './live-transcoding.model';
@@ -263,12 +263,12 @@ export interface AgoraClient {
    */
   leave: (onSuccess?: () => void, onFailure?: (error: Error) => void) => void;
   /**
-   * Occurs when an Agora.io event is received from the SDK.
+   * Occurs when an Agora.io event connected to the local client is received from the SDK.
    *
    * @see [On](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#on)
    * for all variations of this core function.
    */
-  on: (event: AgoraEvent, callback: (evt: any) => void) => void;
+  on: (event: ClientEvent, callback: (evt: any) => void) => void;
   /**
    * Publishes a Local Stream
    * This method publishes a local stream to the SD-RTN.
