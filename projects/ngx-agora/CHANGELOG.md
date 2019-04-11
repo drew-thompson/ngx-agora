@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.5.0](https://github.com/drew-thompson/ngx-agora/compare/v1.4.0...v1.5.0) (2019-04-11)
+
+
+### Features
+
+* **models:** strongly type Agora Stream object ([4f27c53](https://github.com/drew-thompson/ngx-agora/commit/4f27c53))
+
+
+
 # [1.4.0](https://github.com/drew-thompson/ngx-agora/compare/v1.3.0...v1.4.0) (2019-04-11)
 
 
