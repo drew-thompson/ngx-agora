@@ -705,4 +705,12 @@ export interface Stream {
    * Not mentioned in Agora.io official docs, may be inherited DOM function.
    */
   addEventListener: (t: string, n: any) => any;
+  /**
+   * Whether the stream has its audio enabled.
+   */
+  audioEnabled: boolean;
+  /**
+   * Whether the stream has its video enabled.
+   */
+  videoEnabled: boolean;
 }
