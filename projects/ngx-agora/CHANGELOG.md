@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.4.0](https://github.com/drew-thompson/ngx-agora/compare/v1.3.0...v1.4.0) (2019-04-11)
+
+
+### Features
+
+* **models:** type AgoraRTC and its Logger ([9d155a0](https://github.com/drew-thompson/ngx-agora/commit/9d155a0))
+* **service:** implement new RTC modeling with static SDK instance ([ebba4bf](https://github.com/drew-thompson/ngx-agora/commit/ebba4bf))
+
+
+
 # [1.3.0](https://github.com/drew-thompson/ngx-agora/compare/v1.2.0...v1.3.0) (2019-04-11)
 
 
