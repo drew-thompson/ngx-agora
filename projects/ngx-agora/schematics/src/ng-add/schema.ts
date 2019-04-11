@@ -6,5 +6,5 @@ export interface Schema {
   appId: string;
 
   /** Version of the Agora SDK to be used. */
-  version: 'latest' | '2.6.0' | '2.5.2' | '2.4.1';
+  version: 'latest' | '2.6.1' | '2.5.2' | '2.4.1';
 }

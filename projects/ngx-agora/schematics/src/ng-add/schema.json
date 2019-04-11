@@ -23,13 +23,17 @@
     "version": {
       "type": "string",
       "description": "The Agora.io SDK version",
-      "default": "2.5.2",
+      "default": "2.6.1",
       "x-prompt": {
         "message": "Choose a specific Agora.io SDK version, or \"latest\" for the latest published release:",
         "type": "list",
         "items": [{
             "value": "latest",
             "label": "Latest Release        [ Preview: https://www.npmjs.com/package/agora-rtc-sdk ]"
+          },
+          {
+            "value": "2.6.1",
+            "label": "2.6.1  [ Preview: https://www.npmjs.com/package/agora-rtc-sdk/v/2.6.1 ]"
           },
           {
             "value": "2.5.2",

@@ -129,14 +129,14 @@ export class AppComponent implements OnInit {
     });
 
     this.client.on(ClientEvent.RemoteStreamAdded, evt => {
-      const stream = evt.stream;
+      const stream = evt.stream as Stream;
       this.client.subscribe(stream, { audio: true, video: true }, err => {
         console.log('Subscribe stream failed', err);
       });
     });
 
     this.client.on(ClientEvent.RemoteStreamSubscribed, evt => {
-      const stream = evt.stream;
+      const stream = evt.stream as Stream;
       const id = this.getRemoteId(stream);
       if (!this.remoteCalls.length) {
         this.remoteCalls.push(id);
@@ -145,14 +145,14 @@ export class AppComponent implements OnInit {
     });
 
     this.client.on(ClientEvent.RemoteStreamRemoved, evt => {
-      const stream = evt.stream;
+      const stream = evt.stream as Stream;
       stream.stop();
       this.remoteCalls = [];
       console.log(`Remote stream is removed ${stream.getId()}`);
     });
 
     this.client.on(ClientEvent.PeerLeave, evt => {
-      const stream = evt.stream;
+      const stream = evt.stream as Stream;
       if (stream) {
         stream.stop();
         this.remoteCalls = this.remoteCalls.filter(call => call !== `${this.getRemoteId(stream)}`);
