@@ -6,6 +6,7 @@ export * from './device.model';
 export * from './client-config.model';
 export * from './inject-stream-config.model';
 export * from './live-transcoding.model';
+export * from './logger.model';
 export * from './local-audio-stats-map.model';
 export * from './local-audio-stats.model';
 export * from './local-video-stats-map.model';

@@ -1,10 +1,19 @@
 import { AgoraClient } from './agora-client.model';
 import { ClientConfig } from './client-config.model';
 import { DesktopCapturerSource } from './desktop-capturer-source.model';
+import { Logger } from './logger.model';
 import { MediaStream } from './media-stream.model';
 import { StreamSpec } from './stream-spec.model';
 import { Stream } from './stream.model';
 
+/**
+ * AgoraRTC is the entry point for all the methods that can be called in Agora Web SDK.
+ *
+ * You can use the AgoraRTC methods to create
+ * [Client](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html) and
+ * [Stream](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html) objects.
+ * Other methods of the AgoraRTC object check for system requirements and set up error logging.
+ */
 export interface AgoraRTC {
   /**
    * Checks the Web Browser Compatibility
@@ -98,4 +107,8 @@ export interface AgoraRTC {
    *  });
    */
   getSupportedCodec: (supportedCodecOptions?: { stream?: MediaStream }) => Promise<object>;
+  /**
+   * Logs connection information and errors to the console during active periods of the Agora.io SDK.
+   */
+  Logger: Logger;
 }
