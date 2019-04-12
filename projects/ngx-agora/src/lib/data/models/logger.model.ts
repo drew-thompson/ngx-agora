@@ -4,10 +4,15 @@ import { LogLevel } from '../enums/log-level.enum';
  * Provides methods to enable/disable log upload and set output log level.
  */
 export interface Logger {
+  /** Outputs all logs. */
   DEBUG: LogLevel.Debug;
+  /** Outputs logs of the INFO, WARNING and ERROR levels. */
   INFO: LogLevel.Info;
+  /** Outputs logs of the WARNING and ERROR levels. */
   WARNING: LogLevel.Warning;
+  /** Outputs logs of the ERROR level. */
   ERROR: LogLevel.Error;
+  /** Outputs no logs. */
   NONE: LogLevel.None;
   debug: (message: string) => void;
   error: (message: string) => void;
