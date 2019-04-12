@@ -52,9 +52,61 @@ export interface AgoraClient {
    * });
    */
   configPublisher: (width: number, height: number, framerate: number, bitrate: number, publisherUrl: string) => void;
+  /**
+   * Disables dual streams.
+   *
+   * @example
+   * client.disableDualStream(() => {
+   *   console.log("Disable dual stream success!")
+   * }, err => {
+   *   console.log(err)
+   * })
+   */
   disableDualStream: (onSuccess?: () => any, onFailure?: (error: Error) => any) => void;
+  /**
+   * Enables the SDK to report the active remote users who are speaking and their volume regularly.
+   *
+   * If this method is enabled, the SDK will return the volumes every two seconds, regardless of whether there are active speakers.
+   *
+   * @remark
+   * If you have multiple web pages running the Web SDK, this function might not work.
+   *
+   * @example
+   * client.enableAudioVolumeIndicator(); // Triggers the "volume-indicator" callback event every two seconds.
+   * client.on("volume-indicator", evt => {
+   *   evt.attr.forEach((volume, index) => {
+   *     console.log(`#${index} UID ${volume.uid} Level ${volume.level}`);
+   *   });
+   * });
+   */
   enableAudioVolumeIndicator: () => void;
+  /**
+   * Enables the dual-stream mode on the publisher side.
+   *
+   * Dual streams are a hybrid of a high-video stream and a low-video stream:
+   * - High-video stream: high bitrate, high resolution
+   * - Low-video stream: low bitrate, low resolution
+   *
+   * @example
+   * client.enableDualStream(() => {
+   *   console.log("Enable dual stream success!")
+   * }, err => {
+   *   console,log(err)
+   * })
+   *
+   * @remark
+   * This method does not apply to the following scenarios:
+   * - The stream is created by defining the audioSource and videoSource properties.
+   * - Audio-only mode (audio: true, video: false)
+   * - Safari browser on iOS
+   * - Screen-sharing scenario
+   */
   enableDualStream: (onSuccess?: () => any, onFailure?: (error: Error) => any) => void;
+  /**
+   * Enumerates the available video input devices, such as cameras.
+   *
+   * If this method succeeds, the SDK returns a list of video input devices in an array of MediaDeviceInfo objects.
+   */
   getCameras: (callback: (devices: MediaDeviceInfo[]) => any) => void;
   /**
    * This method returns the state of the connection between the SDK and Agora's edge server.
@@ -539,16 +591,18 @@ export interface AgoraClient {
    *
    */
   unsubscribe: (stream: Stream, onFailure?: (error: Error) => void) => void;
-  aesMode: string;
-  aespassword: string;
-  gatewayClient: {}; // add object
-  highStream: any; // ? type
-  highStreamState: number;
-  isDualStream: boolean;
-  key: any; // ? string
-  lowStream: any; // ?
-  lowStreamParameter: any; // ?
-  lowStreamState: number;
-  proxyServer: any; // ?
-  turnServer: any; // function
+
+  /* Legacy properties from angular-agora-rtc */
+  aesMode?: string;
+  aespassword?: string;
+  gatewayClient?: {};
+  highStream?: any;
+  highStreamState?: number;
+  isDualStream?: boolean;
+  key?: any;
+  lowStream?: any;
+  lowStreamParameter?: any;
+  lowStreamState?: number;
+  proxyServer?: any;
+  turnServer?: any;
 }
