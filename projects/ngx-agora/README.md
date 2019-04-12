@@ -1,3 +1,6 @@
+[![npm version](https://badge.fury.io/js/ngx-agora.svg)](https://badge.fury.io/js/ngx-agora)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # ngx-agora
 
 > Angular 7 wrapper for the Agora Web RTC client from [Agora.io](https://www.agora.io/en/)
@@ -111,11 +114,11 @@ Once the stream has been set up and configured, the sample app adds event listen
 
 ```ts
     // The user has granted access to the camera and mic.
-    this.localStream.on("accessAllowed", () => {
+    this.localStream.on(StreamEvent.MediaAccessAllowed, () => {
       console.log("accessAllowed");
     });
     // The user has denied access to the camera and mic.
-    this.localStream.on("accessDenied", () => {
+    this.localStream.on(StreamEvent.MediaAccessDenied, () => {
       console.log("accessDenied");
     });
 ```
@@ -126,9 +129,9 @@ Once the stream has been set up and configured, the sample app adds event listen
       this.localStream.init(() => {
       console.log("getUserMedia successfully");
       this.localStream.play('agora_local');
-      this.agoraService.client.publish(this.localStream, (err) => console.log("Publish local stream error: " + err));
-      this.agoraService.client.on('stream-published', (evt) => console.log("Publish local stream successfully"));
-    }, (err) => console.log("getUserMedia failed", err));
+      this.agoraService.client.publish(this.localStream, err => console.log("Publish local stream error: " + err));
+      this.agoraService.client.on(ClientEvent.LocalStreamPublished, evt => console.log("Publish local stream successfully"));
+    }, err => console.log("getUserMedia failed", err));
 ```
 
 #### Set-up Client Error Handling
@@ -140,7 +143,7 @@ Since the Channel Key has an expiration, the sample app checks for the error `DY
 **Note:** If the channel key is not renewed, the communication to the SDK will disconnect.
 
 ```ts
-    this.agoraService.client.on('error', (err) => {
+    this.agoraService.client.on(ClientEvent.Error, (err) => {
       console.log("Got error msg:", err.reason);
       if (err.reason === 'DYNAMIC_KEY_TIMEOUT') {
         this.agoraService.client.renewChannelKey("",() =>{
@@ -157,8 +160,8 @@ Since the Channel Key has an expiration, the sample app checks for the error `DY
 The stream-added event listener detects when a new stream is added to the client. The sample app subscribes the newly added stream to the client after a new stream is added to the client
 
 ```ts
-    this.agoraService.client.on('stream-added', (evt) => {
-      const stream = evt.stream;
+    this.agoraService.client.on(ClientEvent.RemoteStreamAdded, (evt) => {
+      const stream = evt.stream as Stream;
       this.agoraService.client.subscribe(stream, (err) => {
         console.log("Subscribe stream failed", err);
       });
@@ -170,8 +173,8 @@ The stream-added event listener detects when a new stream is added to the client
 The sample app uses the `stream-subscribed` event listener to detect when a new stream has been subscribed to the client, and to retrieve its stream ID using the `stream.getId()` method.
 
 ```ts
-    this.agoraService.client.on('stream-subscribed', (evt) => {
-      const stream = evt.stream;
+    this.agoraService.client.on(ClientEvent.RemoteStreamSubscribed, evt => {
+      const stream = evt.stream as Stream;
       if (!this.remoteCalls.includes(`agora_remote${stream.getId()}`)) this.remoteCalls.push(`agora_remote${stream.getId()}`);
       setTimeout(() => stream.play(`agora_remote${stream.getId()}`), 1000);
     });
@@ -184,8 +187,8 @@ Once the stream has been added to the `remoteCalls` array, the sample app sets a
 If the stream is removed from the client, the `stream-removed` event listener is called, the sample app stops the stream from playing by calling the `stream.stop()` method. We then remove the stream from the `remoteCalls` array using the `filter()` method.
 
 ```ts
-    this.agoraService.client.on('stream-removed', (evt) => {
-      const stream = evt.stream;
+    this.agoraService.client.on(ClientEvent.RemoteStreamRemoved, evt => {
+      const stream = evt.stream as Stream;
       stream.stop();
       this.remoteCalls = this.remoteCalls.filter(call => call !== `#agora_remote${stream.getId()}`);
       console.log(`Remote stream is removed ${stream.getId()}`);
@@ -197,8 +200,8 @@ If the stream is removed from the client, the `stream-removed` event listener is
 When the sample app detects that a peer leaves the client using the `peer-leave` event listener, it stops the stream from playing. We then remove the stream from the `remoteCalls` array using the `filter()` method.
 
 ```ts
-    this.agoraService.client.on('peer-leave', (evt) => {
-      const stream = evt.stream;
+    this.agoraService.client.on(ClientEvent.PeerLeave, evt => {
+      const stream = evt.stream as Stream;
       if (stream) {
         stream.stop();
         this.remoteCalls = this.remoteCalls.filter(call => call === `#agora_remote${stream.getId()}`);
