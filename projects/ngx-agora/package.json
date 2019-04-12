@@ -1,6 +1,6 @@
 {
   "name": "ngx-agora",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "schematics": "./schematics/collection.json",
   "peerDependencies": {
     "@angular/common": "^7.0.0",
