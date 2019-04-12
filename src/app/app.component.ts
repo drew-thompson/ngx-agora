@@ -93,7 +93,6 @@ export class AppComponent implements OnInit {
         this.localStream.play('agora_local');
         this.connected = true;
         this.assignHandlers();
-        console.warn(this.localStream);
       },
       err => console.log('getUserMedia failed', err)
     );
