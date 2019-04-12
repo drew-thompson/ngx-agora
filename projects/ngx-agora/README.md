@@ -1,3 +1,6 @@
+[![npm version](https://badge.fury.io/js/ngx-agora.svg)](https://badge.fury.io/js/ngx-agora)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # ngx-agora
 
 > Angular 7 wrapper for the Agora Web RTC client from [Agora.io](https://www.agora.io/en/)
