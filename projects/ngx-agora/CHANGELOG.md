@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.6](https://github.com/drew-thompson/ngx-agora/compare/v1.5.0...v1.5.6) (2019-04-12)
+
+
+### Bug Fixes
+
+* prevent null error access in service ([e451d44](https://github.com/drew-thompson/ngx-agora/commit/e451d44))
+
+
+
 # [1.5.0](https://github.com/drew-thompson/ngx-agora/compare/v1.4.0...v1.5.0) (2019-04-11)
 
 
