@@ -47,7 +47,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.client.init(this.appId.value, () => console.log('Initialized successfully'), () => console.log('Could not initialize'));
+    this.client.init(
+      this.appId.value,
+      () => {
+        console.log('Initialized successfully');
+        this.assignClientHandlers();
+      },
+      () => console.log('Could not initialize')
+    );
   }
 
   join(): void {
@@ -62,9 +69,7 @@ export class AppComponent implements OnInit {
   }
 
   unpublish(): void {
-    this.client.unpublish(this.localStream, error => {
-      console.error(error);
-    });
+    this.client.unpublish(this.localStream, error => console.error(error));
     this.published = false;
   }
 
@@ -89,21 +94,17 @@ export class AppComponent implements OnInit {
   protected init(): void {
     this.localStream.init(
       () => {
+        this.assignLocalStreamHandlers();
+        // The user has granted access to the camera and mic.
         console.log('getUserMedia successfully');
         this.localStream.play('agora_local');
         this.connected = true;
-        this.assignHandlers();
       },
       err => console.log('getUserMedia failed', err)
     );
   }
 
-  private assignHandlers(): void {
-    this.client.on(ClientEvent.LocalStreamPublished, evt => {
-      this.published = true;
-      console.log('Publish local stream successfully');
-    });
-    // The user has granted access to the camera and mic.
+  private assignLocalStreamHandlers(): void {
     this.localStream.on(StreamEvent.MediaAccessAllowed, () => {
       console.log('accessAllowed');
     });
@@ -111,18 +112,21 @@ export class AppComponent implements OnInit {
     this.localStream.on(StreamEvent.MediaAccessDenied, () => {
       console.log('accessDenied');
     });
+  }
 
-    this.client.on(ClientEvent.Error, err => {
-      console.log('Got error msg:', err.reason);
-      if (err.reason === 'DYNAMIC_KEY_TIMEOUT') {
+  private assignClientHandlers(): void {
+    this.client.on(ClientEvent.LocalStreamPublished, evt => {
+      this.published = true;
+      console.log('Publish local stream successfully');
+    });
+
+    this.client.on(ClientEvent.Error, error => {
+      console.log('Got error msg:', error.reason);
+      if (error.reason === 'DYNAMIC_KEY_TIMEOUT') {
         this.client.renewChannelKey(
           '',
-          () => {
-            console.log('Renew channel key successfully');
-          },
-          err => {
-            console.log('Renew channel key failed: ', err);
-          }
+          () => console.log('Renewed the channel key successfully.'),
+          renewError => console.error('Renew channel key failed: ', renewError)
         );
       }
     });

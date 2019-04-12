@@ -11,7 +11,8 @@
     "link": "npm link dist/ngx-agora",
     "ng-add": "ng g ngx-agora:ng-add",
     "schematics": "cd projects/ngx-agora && npm run build && cd ../../ && npm run link",
-    "release": "cd projects/ngx-agora && npm run build && standard-version && cd ../../ && git push && cd dist/ngx-agora"
+    "release": "cd projects/ngx-agora && npm run build && standard-version && cd ../../ && git push && cd dist/ngx-agora",
+    "deploy": "ng build --prod && firebase deploy"
   },
   "private": true,
   "dependencies": {
