@@ -8,8 +8,10 @@ export interface MediaDeviceInfo {
   deviceId: string;
   /** Returns an enumerated value that is "videoinput", "audioinput" or "audiooutput". */
   kind: MediaDeviceKind;
-  /** Returns a DOMString that is a label describing this device (for example "External USB Webcam").
-   * @description
+  /**
+   * Returns a DOMString that is a label describing this device (for example "External USB Webcam").
+   *
+   * @remark
    * For security reasons, the label field is always blank unless an active media stream exists
    * or the user has granted persistentpermission for media device access.
    */

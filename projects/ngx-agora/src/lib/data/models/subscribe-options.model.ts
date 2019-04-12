@@ -1,7 +1,7 @@
 /**
- *  Whether to receive the video or audio data independently by the video and audio parameters.
+ * Whether to receive the video or audio data independently by the video and audio parameters.
  *
- * @description
+ * @remark
  * `video` and `audio` cannot be set as `false` at the same time.
  * If you need to stop subscribing to the stream, call
  * [Client.unsubscribe](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#unsubscribe) instead.

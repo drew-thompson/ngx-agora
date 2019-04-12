@@ -62,7 +62,7 @@ export enum ClientEvent {
   RecordingDeviceChanged = 'recording-device-changed',
   /**
    * Occurs when an audio output device is added or removed.
-   * @description
+   * @remark
    * Only supports Chrome 49+.
    */
   AudioOutputDeviceChanged = 'playout-device-changed',
@@ -113,7 +113,7 @@ export enum ClientEvent {
    *
    * This callback reports on the uplink and downlink network conditions of the local user.
    *
-   * @description
+   * @remark
    * This is an experimental feature and the network quality rating is for reference only.
    */
   NetworkQualityReported = 'network-quality',
@@ -126,7 +126,7 @@ export enum ClientEvent {
    * the SDK triggers this callback when the remote media stream falls back to audio only due to unreliable network conditions
    * or switches back to the video after the network condition improves.
    *
-   * @description
+   * @remark
    * Once the remote media stream is switched to the low stream due to unreliable network conditions, you can monitor
    * the stream switch between a high stream and low stream in the stream-type-changed callback.
    */

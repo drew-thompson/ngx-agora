@@ -17,7 +17,7 @@ export interface InjectStreamConfig {
    * Audio bitrate of the added stream to the broadcast.
    * Positive integer. The default value is 48. The value range is [1, 10000].
    *
-   * @description
+   * @remark
    * Agora recommends that you stay with the default value and not reset it at this point of time.
    */
   audioBitrate?: number;
@@ -25,7 +25,7 @@ export interface InjectStreamConfig {
    * Audio channels to add into the broadcast.
    * Positive integer. The default value is 1. The value range is [1, 2].
    *
-   * @description
+   * @remark
    * Agora recommends that you stay with the default value and not reset it at this point of time.
    */
   audioChannels?: number;
@@ -35,7 +35,7 @@ export interface InjectStreamConfig {
    * 44100: (Default) 44.1 kHz
    * 48000: 48 kHz
    *
-   * @description
+   * @remark
    * Agora recommends that you stay with the default value and not reset it at this point of time.
    */
   audioSampleRate?: number;
@@ -43,7 +43,7 @@ export interface InjectStreamConfig {
    * Video bitrate of the added stream to the broadcast.
    * Positive integer. The default value is 400 Kbps. The value range is [1, 10000].
    *
-   * @description
+   * @remark
    * The setting of the video bitrate is closely linked to the resolution. If the video bitrate you set is beyond
    * the reasonable range, the SDK will set it within the reasonable range instead.
    */

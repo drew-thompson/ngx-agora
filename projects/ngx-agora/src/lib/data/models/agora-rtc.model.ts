@@ -24,7 +24,7 @@ export interface AgoraRTC {
    * - true: The Web SDK is compatible with the current web browser.
    * - false: The Web SDK is not compatible with the current web browser.
    *
-   * @description
+   * @remark
    * Agora has yet to conduct comprehensive tests on Chromium kernel browsers, such as QQ and 360.
    * Agora will gradually achieve compatibility on most mainstream browsers in subsequent versions of the Web SDK.
    */
@@ -45,13 +45,17 @@ export interface AgoraRTC {
   /**
    * This method creates and returns a stream object.
    *
-   * @param spec Defines the properties of the stream, see StreamSpec for details.
+   * @example
+   * AgoraRTC.createStream(spec)
+   *
+   * @param spec Defines the properties of the stream
+   * @see [StreamSpec](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.streamspec.html) for details.
    */
   createStream: (spec: StreamSpec) => Stream;
   /**
    * This method enumerates the available media input and output devices, such as microphones, cameras, headsets, and so on.
    *
-   * If this method succeeds, the SDK returns a list of media devices in an array of MediaDeviceInfo objects.
+   * If this method succeeds, the SDK returns a list of media devices in an array of `MediaDeviceInfo` objects.
    *
    * @example
    * AgoraRTC.getDevices(devices => {
@@ -83,7 +87,7 @@ export interface AgoraRTC {
    * This method supports all web browsers. For web browsers that do not support WebRTC or
    * are not recognized, the returned codec list is empty.
    *
-   * @description
+   * @remark
    * In the `.then(function(result){})` callback, `result` has the following properties:
    * - `video`: array, the supported video codecs. The array might include `'H264'` and `'VP8'`, or be empty.
    * - `audio`: array, the supported audio codecs. The array might include `'OPUS'`, or be empty.

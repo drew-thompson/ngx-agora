@@ -4,7 +4,7 @@ import { TurnServer } from './turn-server.model';
  * A class defining the properties of the config parameter in the
  * [createClient](https://docs.agora.io/en/Video/API%20Reference/web/globals.html#createclient) method.
  *
- * @description
+ * @remark
  * - Ensure that you do not leave mode and codec as empty.
  * - Ensure that you set these properties before calling Client.join.
  *
@@ -41,7 +41,7 @@ export interface ClientConfig {
    * - `'vp8'`: Sets the browser to use VP8 for encoding and decoding.
    * - `'h264'`: Sets the browser to use H264 for encoding and decoding.
    *
-   * @description
+   * @remark
    * Set codec as "h264" as long as Safari is involved in the session.
    */
   codec: 'vp8' | 'h264';
@@ -58,7 +58,7 @@ export interface ClientConfig {
    * - "rtc": Sets the channel profile as communication. This is used in one-on-one calls or group calls,
    *   where all users in the channel can talk freely.
    *
-   * @description
+   * @remark
    * If you need to communicate with Agora Native SDK, Agora recommends the following settings:
    *  - For Native SDK v2.3.2 and later:
    *   Set [mode](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.clientconfig.html#mode)
