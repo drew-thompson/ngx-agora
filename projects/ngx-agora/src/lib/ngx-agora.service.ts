@@ -34,13 +34,12 @@ export class NgxAgoraService {
   }
 
   createStream(spec: StreamSpec) {
-    const defaultMic = this.audioDevices[0].deviceId;
-    const defaultCamera = this.videoDevices[0].deviceId;
-
-    if (!spec.microphoneId && defaultMic) {
+    if (!spec.microphoneId && this.audioDevices && this.audioDevices.length) {
+      const defaultMic = this.audioDevices[0].deviceId;
       spec.microphoneId = defaultMic;
     }
-    if (!spec.cameraId && defaultCamera) {
+    if (!spec.cameraId && this.videoDevices && this.videoDevices.length) {
+      const defaultCamera = this.videoDevices[0].deviceId;
       spec.cameraId = spec.cameraId || defaultCamera;
     }
 
