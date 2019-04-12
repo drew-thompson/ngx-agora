@@ -235,8 +235,7 @@ export interface AgoraClient {
    */
   getTransportStats: (callback: (stats: any) => any) => void;
   /**
-   * Initializes a Client Object
-   * This method initializes the client object.
+   * Initializes the Client object.
    *
    * @param appId Pass in the App ID for your project.
    * ASCII characters only, and the string length must be greater than 0 and less than 256 bytes.

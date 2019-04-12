@@ -3,7 +3,7 @@ import * as agoraSDK from 'agora-rtc-sdk';
 
 import { AgoraClient } from './data/models/agora-client.model';
 import { AgoraConfig } from './data/models/agora-config.model';
-import { AgoraRTC, ClientConfig, MediaDeviceInfo, StreamSpec } from './data/models/exports';
+import { AgoraRTC, ClientConfig, MediaDeviceInfo, Stream, StreamSpec } from './data/models/exports';
 
 /**
  * Provides access to the Agora web API, including the AgoraRTC and Client objects.
@@ -24,12 +24,12 @@ export class NgxAgoraService {
    * @see [getDevices()](https://docs.agora.io/en/Video/API%20Reference/web/globals.html#getdevices)
    *
    */
-  audioDevices: MediaDeviceInfo[];
+  audioDevices: MediaDeviceInfo[] = [];
   /**
    * All video devices collected from the AgoraRTC `getDevices()` method.
    * @see [getDevices()](https://docs.agora.io/en/Video/API%20Reference/web/globals.html#getdevices)
    */
-  videoDevices: MediaDeviceInfo[];
+  videoDevices: MediaDeviceInfo[] = [];
   /**
    * Instance reference to the `static` AgoraRTC library object.
    */
@@ -61,20 +61,33 @@ export class NgxAgoraService {
   }
 
   /**
-   * Creates a Client Object
+   * Creates a Client object.
    *
    * This method creates and returns a client object. You can only call this method once each call session.
    *
    * @param config
    * Defines the property of the client, see
    * [ClientConfig](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.clientconfig.html) for details.
+   * @param [autoInitializing=true] Ngx-agora by default automatically initializes the client with the provided `AppID` after it is created.
+   * Set this property to `false` to disable this functionality, if you are going to call `init()` separately
+   * (after creating the client only).
+   * @param [onSuccess] The callback when the method succeeds.
+   * @param [onFailure] The callback when the method fails.
    *
    * @example
    * AgoraRTC.createClient(config);
    */
-  createClient(config: ClientConfig): void {
+  createClient(
+    config: ClientConfig,
+    autoInitializing: boolean = true,
+    onSuccess?: () => void,
+    onFailure?: (error: Error) => void
+  ): AgoraClient {
     this.client = this.AgoraRTC.createClient(config);
-    this.client.init(this.config.AppID);
+    if (autoInitializing) {
+      this.init(this.config.AppID, onSuccess, onFailure);
+    }
+    return this.client;
   }
 
   /**
@@ -86,7 +99,7 @@ export class NgxAgoraService {
    * @param spec Defines the properties of the stream
    * @see [StreamSpec](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.streamspec.html) for details.
    */
-  createStream(spec: StreamSpec) {
+  createStream(spec: StreamSpec): Stream {
     if (!spec.microphoneId && this.audioDevices && this.audioDevices.length) {
       const defaultMic = this.audioDevices[0].deviceId;
       spec.microphoneId = defaultMic;
@@ -97,6 +110,30 @@ export class NgxAgoraService {
     }
 
     return this.AgoraRTC.createStream(spec);
+  }
+
+  /**
+   * Initializes the Client object.
+   *
+   * @param appId Pass in the App ID for your project.
+   * ASCII characters only, and the string length must be greater than 0 and less than 256 bytes.
+   * To get your App ID,
+   * @see [Get an App ID](https://docs.agora.io/en/Video/web_prepare?platform=Web#create-an-agora-account-and-get-an-app-id).
+   * @param [onSuccess] The callback when the method succeeds.
+   * @param [onFailure] The callback when the method fails.
+   *
+   * @example
+   * this.ngxAgoraService.client.init(appId, () => {
+   * console.log("client initialized");
+   * // Join a channel
+   * //……
+   * }, error => {
+   *     console.log("client init failed ", err);
+   *     // Error handling
+   * });
+   */
+  init(appId: string, onSuccess?: () => void, onFailure?: (error: Error) => void): void {
+    this.client.init(appId, onSuccess, onFailure);
   }
 
   /**

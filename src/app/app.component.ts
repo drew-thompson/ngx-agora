@@ -42,23 +42,17 @@ export class AppComponent implements OnInit {
   constructor(private agoraService: NgxAgoraService) {
     this.uid = Math.floor(Math.random() * 100);
 
-    this.agoraService.createClient({ mode: 'rtc', codec: 'h264' });
-    this.client = this.agoraService.client;
+    this.client = this.agoraService.createClient({ mode: 'rtc', codec: 'h264' });
+    this.assignClientHandlers();
   }
 
   ngOnInit() {
-    this.client.init(
-      this.appId.value,
-      () => {
-        console.log('Initialized successfully');
-        this.assignClientHandlers();
-      },
-      () => console.log('Could not initialize')
-    );
+    this.client.init(this.appId.value, () => console.log('Initialized successfully'), () => console.log('Could not initialize'));
   }
 
   join(): void {
     this.localStream = this.agoraService.createStream({ streamID: this.uid, audio: true, video: true, screen: false });
+    this.assignLocalStreamHandlers();
     this.init();
 
     this.client.join(null, this.channel.value, this.uid);
@@ -94,7 +88,6 @@ export class AppComponent implements OnInit {
   protected init(): void {
     this.localStream.init(
       () => {
-        this.assignLocalStreamHandlers();
         // The user has granted access to the camera and mic.
         console.log('getUserMedia successfully');
         this.localStream.play('agora_local');
@@ -149,9 +142,11 @@ export class AppComponent implements OnInit {
 
     this.client.on(ClientEvent.RemoteStreamRemoved, evt => {
       const stream = evt.stream as Stream;
-      stream.stop();
-      this.remoteCalls = [];
-      console.log(`Remote stream is removed ${stream.getId()}`);
+      if (stream) {
+        stream.stop();
+        this.remoteCalls = [];
+        console.log(`Remote stream is removed ${stream.getId()}`);
+      }
     });
 
     this.client.on(ClientEvent.PeerLeave, evt => {
