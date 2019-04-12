@@ -706,11 +706,31 @@ export interface Stream {
    */
   addEventListener: (t: string, n: any) => any;
   /**
-   * Whether the stream has its audio enabled.
+   * Calculates whether the stream's audio is currently active.
+   *
+   * @remark Refers to a snapshot of the stream's audio status and will return:
+   * - `true`: if the connected user's audio is not muted.
+   * - `false`: if the connected user's audio is muted.
    */
-  audioEnabled: boolean;
+  isAudioOn: () => boolean;
   /**
-   * Whether the stream has its video enabled.
+   * Calculates whether the stream's video is currently active.
+   *
+   * @remark Refers to a snapshot of the stream's video status and will return:
+   * - `true`: if the connected user's video is not muted.
+   * - `false`: if the connected user's video is muted.
    */
-  videoEnabled: boolean;
+  isVideoOn: () => boolean;
+  /**
+   * Whether the stream currently has its audio enabled.
+   *
+   * @version 2.5.2 and below only
+   */
+  audioEnabled?: boolean;
+  /**
+   * Whether the stream currently has its video enabled.
+   *
+   * @version 2.5.2 and below only
+   */
+  videoEnabled?: boolean;
 }
