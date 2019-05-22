@@ -3,7 +3,7 @@ import * as agoraSDK from 'agora-rtc-sdk';
 
 import { AgoraClient } from './data/models/agora-client.model';
 import { AgoraConfig } from './data/models/agora-config.model';
-import { AgoraRTC, ClientConfig, MediaDeviceInfo, Stream, StreamSpec } from './data/models/exports';
+import { AgoraRTC, ClientConfig, MediaDeviceInfo, Stream, StreamSpec } from './data/models';
 
 /**
  * Provides access to the Agora web API, including the AgoraRTC and Client objects.

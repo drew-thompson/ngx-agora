@@ -4,8 +4,13 @@ import { InjectStreamConfig } from './inject-stream-config.model';
 import { LiveTranscoding } from './live-transcoding.model';
 import { LocalAudioStatsMap } from './local-audio-stats-map.model';
 import { LocalVideoStatsMap } from './local-video-stats-map.model';
+import { RemoteAudioStatsMap } from './remote-audio-stats-map.model';
+import { RemoteVideoStatsMap } from './remote-video-stats-map.model';
+import { SessionStats } from './session-stats.model';
 import { Stream } from './stream.model';
 import { SubscribeOptions } from './subscribe-options.model';
+import { SystemStats } from './system-stats.model';
+import { TransportStats } from './transport-stats.model';
 import { TurnServer } from './turn-server.model';
 
 /**
@@ -193,7 +198,7 @@ export interface AgoraClient {
    * The statistics are calculated after the `stream-subscribed` event, which may take at most 3 seconds.
    * This method supports the Chrome browser only.
    */
-  getRemoteAudioStats: (callback: (stats: any) => any) => void;
+  getRemoteAudioStats: (callback: (stats: RemoteAudioStatsMap) => void) => void;
   /**
    * Retrieves the Video Statistics of the Remote Stream
    * This method retrieves the video statistics of the remote stream, including packet loss rate, video bitrate, frame rate, and so on.
@@ -202,7 +207,7 @@ export interface AgoraClient {
    * The statistics are calculated after the `stream-subscribed` event, which may take at most 3 seconds.
    * This method supports the Chrome browser only.
    */
-  getRemoteVideoStats: (callback: (stats: any) => any) => void;
+  getRemoteVideoStats: (callback: (stats: RemoteVideoStatsMap) => void) => void;
   /**
    * Gets the Statistics of the Session
    * This method gets the statistics of the session connection.
@@ -211,7 +216,7 @@ export interface AgoraClient {
    * This method should be called after joining the channel, and it may take at most 3 seconds to retrieve the statistics.
    * This method supports the Chrome browser only.
    */
-  getSessionStats: (callback: (stats: any) => any) => void;
+  getSessionStats: (callback: (stats: SessionStats) => void) => void;
   /**
    * Gets the Statistics of the System
    *
@@ -224,7 +229,7 @@ export interface AgoraClient {
    * This feature is experimental.
    * @see [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API) for browser compatibility.
    */
-  getSystemStats: (callback: (stats: any) => any) => void;
+  getSystemStats: (callback: (stats: SystemStats) => void) => void;
   /**
    * Gets the Statistics of the Transmission
    * This method gets the statistics of the transmission quality to Agora service.
@@ -233,7 +238,7 @@ export interface AgoraClient {
    * Calculation of the statistics may take at most 3 seconds.
    * This method supports the Chrome browser only.
    */
-  getTransportStats: (callback: (stats: any) => any) => void;
+  getTransportStats: (callback: (stats: TransportStats) => void) => void;
   /**
    * Initializes the Client object.
    *
