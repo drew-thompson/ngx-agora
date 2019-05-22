@@ -1,6 +1,15 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [1.5.9](https://github.com/drew-thompson/ngx-agora/compare/v1.5.6...v1.5.9) (2019-05-22)
+
+
+### Bug Fixes
+
+* **demo:** split handlers and assign eagerly ([0e40098](https://github.com/drew-thompson/ngx-agora/commit/0e40098))
+
+
 
 ## [1.5.6](https://github.com/drew-thompson/ngx-agora/compare/v1.5.0...v1.5.6) (2019-04-12)
 
