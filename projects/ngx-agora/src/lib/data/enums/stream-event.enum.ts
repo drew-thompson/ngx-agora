@@ -15,6 +15,18 @@ export enum StreamEvent {
   /** Occurs when screen-sharing stops. */
   ScreenSharingStopped = 'stopScreenSharing',
   /**
+   * Occurs when the video track no longer provides data to the stream.
+   *
+   * Possible reasons include device removal and deauthorization. See [Media​Stream​Track​.onended](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/onended).
+   */
+  VideoTrackEnded = 'videoTrackEnded',
+  /**
+   * Occurs when the audio track no longer provides data to the stream.
+   *
+   * Possible reasons include device removal and deauthorization. See [Media​Stream​Track​.onended](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/onended).
+   */
+  AudioTrackEnded = 'audioTrackEnded',
+  /**
    * Occurs when the audio mixing stream playback starts/resumes.
    *
    * @remarks
@@ -23,5 +35,12 @@ export enum StreamEvent {
    */
   AudioMixingPlayed = 'audioMixingPlayed',
   /** Occurs when the last audio mixing stream playback finishes. */
-  AudioMixingFinished = 'audioMixingFinished'
+  AudioMixingFinished = 'audioMixingFinished', 
+  /**
+   * Occurs when the stream playback status changes.
+   *
+   * On Windows, frequent DOM manipulations might cause the browser to pause the Chrome player.
+   * To avoid this, you can listen for this event and call the [Stream.resume](https://docs.agora.io/en/Voice/API%20Reference/web/interfaces/agorartc.stream.html#resume) method to resume the playback.
+   * */
+  PlayerStatusChange = 'player-status-change',
 }

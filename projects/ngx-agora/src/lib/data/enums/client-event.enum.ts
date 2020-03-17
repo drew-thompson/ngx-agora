@@ -7,6 +7,8 @@
  * this.ngxAgoraService.client.on('new-event' as ClientEvent, (data) => {})
  */
 export enum ClientEvent {
+  FirstAudioFrameDecode = 'first-audio-frame-decode',
+  FirstVideoFrameDecode = 'first-video-frame-decode',
   LocalStreamPublished = 'stream-published',
   RemoteStreamAdded = 'stream-added',
   RemoteStreamRemoved = 'stream-removed',

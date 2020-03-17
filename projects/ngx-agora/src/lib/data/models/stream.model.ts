@@ -9,6 +9,7 @@ import { LocalStreamStats } from './local-stream-stats.model';
 import { MediaStreamTrack } from './media-stream-track.model';
 import { RemoteStreamStats } from './remote-stream-stats.model';
 import { VideoPlayOptions } from './video-play-options.model';
+import { VideoEncoderConfiguration } from './video-encoder-configuration.model';
 
 /**
  * The Stream object created by the [createStream](https://docs.agora.io/en/Video/API%20Reference/web/globals.html#createstream) method.
@@ -341,7 +342,7 @@ export interface Stream {
    * Represents the HTML element ID. Digits and letters in the ASCII character set, “_”, “-", and ".".
    * The string length must be greater than 0 and less than 256 bytes.
    */
-  play: (HTMLElementID: string, option?: VideoPlayOptions) => void;
+  play: (HTMLElementID: string, option?: VideoPlayOptions, callback?: (err: string) => void) => void;
   /**
    * Plays a specified audio effect.
    *
@@ -434,6 +435,15 @@ export interface Stream {
    *
    */
   replaceTrack: (MediaStreamTrack: MediaStreamTrack, onSuccess?: () => void, onFailure?: (error: Error) => void) => void;
+  /**
+   * Resumes the Audio/Video Stream Playback
+   *
+   * This method can be used when the playback fails after calling the [Stream.play](https://docs.agora.io/en/Voice/API%20Reference/web/interfaces/agorartc.stream.html#play) method.
+   * In most cases, the playback is stopped due to the browser policy.
+   *
+   * This method needs to be triggered by a user gesture. See [Autoplay Policy Changes](https://developers.google.com/web/updates/2017/09/autoplay-policy-changes) for more information.
+   */
+  resume: () => Promise<any>;
   /**
    * Resumes playing all audio effects.
    *
@@ -539,6 +549,12 @@ export interface Stream {
    * In this case, billings will be calculated based on the actual resolution.
    */
   setScreenProfile: (profile: ScreenProfile) => void;
+  /**
+   * Customizes the Video Encoder Configuration
+   *
+   * You can use this method to customize the video resolution, frame rate, and bitrate of the local stream. This method can be called before or after [Stream.init](https://docs.agora.io/en/Voice/API%20Reference/web/interfaces/agorartc.stream.html#init).
+   */
+  setVideoEncoderConfiguration(config: VideoEncoderConfiguration): void;
   /**
    * Sets the stream's video profile.
    * It is optional and works only when called before

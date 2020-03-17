@@ -31,3 +31,4 @@ export * from './transcoding-user.model';
 export * from './transport-stats.model';
 export * from './turn-server.model';
 export * from './video-play-options.model';
+export * from './video-encoder-configuration.model';

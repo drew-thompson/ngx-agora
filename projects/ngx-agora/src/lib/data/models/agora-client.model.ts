@@ -326,6 +326,11 @@ export interface AgoraClient {
    */
   on: (event: ClientEvent, callback: (evt: any) => void) => void;
   /**
+   * Unbinds Events
+   * This method removes the events attached by the Client.on() method.
+   */
+  off: (event: ClientEvent, callback: (evt: any) => void) => void;
+  /**
    * Publishes a Local Stream
    * This method publishes a local stream to the SD-RTN.
    *

@@ -126,6 +126,14 @@ export interface StreamSpec {
    */
   extensionId?: string;
   /**
+   * Sets using the front or rear camera
+   *
+   * You can set this parameter to use the front or rear camera on mobile devices:
+   * - "user": The front camera
+   * - "environment": The rear camera
+   */
+  facingMode?: 'user' | 'environment';
+  /**
    * The screen-sharing mode on the Firefox browser.
    *
    * If you are using the Firefox browser, setting this property specifies the screen-sharing mode:
