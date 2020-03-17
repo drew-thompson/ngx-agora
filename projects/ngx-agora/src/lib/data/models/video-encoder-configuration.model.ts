@@ -32,9 +32,9 @@ export interface VideoEncoderConfiguration {
      * Resolution of the video.
      *
      * We recommend using common resolutions, for example:
-     * - 480 × 360
-     * - 640 × 480
-     * - 960 × 720
+     * - 480 x 360
+     * - 640 x 480
+     * - 960 x 720
      */
     resolution: {
         height: number;

@@ -10,6 +10,7 @@ import { MediaStreamTrack } from './media-stream-track.model';
 import { RemoteStreamStats } from './remote-stream-stats.model';
 import { VideoPlayOptions } from './video-play-options.model';
 import { VideoEncoderConfiguration } from './video-encoder-configuration.model';
+import { BeautyEffectOptions } from './beauty-effect-options.model';
 
 /**
  * The Stream object created by the [createStream](https://docs.agora.io/en/Video/API%20Reference/web/globals.html#createstream) method.
@@ -524,6 +525,30 @@ export interface Stream {
    */
   setAudioVolume: (volume: number) => void;
   /**
+   * Enables/Disables image enhancement and sets the options.
+   *
+   * @param enabled Sets whether to enable image enhancement
+   * @param options The image enhancement options.
+   *
+   * @example
+   * stream.setBeautyEffectOptions(true, {
+   *     lighteningContrastLevel: 1,
+   *     lighteningLevel: 0.7,
+   *     smoothnessLevel: 0.5,
+   *     rednessLevel: 0.1
+   * });
+   *
+   * @remark
+   * - This function does not support mobile devices.
+   * - If the dual-stream mode is enabled ([enableDualStream](https://docs.agora.io/en/Voice/API%20Reference/web/interfaces/agorartc.client.html#enabledualstream)), the image enhancement options apply only to the high-video stream.
+   * - If image enhancement is enabled, you must call this method to disable it before calling the following methods: leave, stop, removeTrack, unpublish
+   * - The image enhancement function involves real-time compute-intensive processing.
+   * Though it is based on hardware acceleration, the processing has high GPU and CPU overheads.
+   * For low-end devices, enabling image enhancement affects the system performance.
+   * When the video resolution is set as 360p, 720p or higher, and the frame rate is set as 30 fps or 15 fps, do not enable image enhancement.
+   */
+  setBeautyEffectOptions: (enabled: boolean, options: BeautyEffectOptions) => void;
+  /**
    * Sets the volume of the audio effects.
    *
    * @param volume
@@ -554,7 +579,7 @@ export interface Stream {
    *
    * You can use this method to customize the video resolution, frame rate, and bitrate of the local stream. This method can be called before or after [Stream.init](https://docs.agora.io/en/Voice/API%20Reference/web/interfaces/agorartc.stream.html#init).
    */
-  setVideoEncoderConfiguration(config: VideoEncoderConfiguration): void;
+  setVideoEncoderConfiguration: (config: VideoEncoderConfiguration) => void;
   /**
    * Sets the stream's video profile.
    * It is optional and works only when called before

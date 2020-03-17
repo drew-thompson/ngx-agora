@@ -23,6 +23,11 @@ export enum ClientEvent {
   RemoteAudioUnmuted = 'unmute-audio',
   RemoveVideoMuted = 'mute-video',
   RemoteVideoUnmuted = 'unmute-video',
+  /** Occurs when encryption or decryption fails during publishing or subscribing to a stream.
+   *
+   * The failure is usually due to a wrong encryption password ([setEncryptionSecret](https://docs.agora.io/en/Voice/API%20Reference/web/interfaces/agorartc.client.html#setencryptionsecret)) or an incorrect encryption mode ([setEncryptionMode](https://docs.agora.io/en/Voice/API%20Reference/web/interfaces/agorartc.client.html#setencryptionmode)).
+   */
+  CryptError = 'crypt-error',
   /** Occurs when an error message is reported and requires error handling.
    * For details, @see [Error Codes and Warning Codes](https://docs.agora.io/en/Video/the_error_web).
    */
@@ -142,5 +147,13 @@ export enum ClientEvent {
    * Each exception event has a corresponding recovery event
    * @see https://web-cdn.agora.io/docs-files/1547180053430 for details
    */
-  Exception = 'exception'
+  Exception = 'exception',
+  /** Occurs when a remote user of the Native SDK calls `enableLocalVideo(true)` to enable video capture. */
+  EnableLocalVideo = 'enable-local-video',
+  /** Occurs when a remote user of the Native SDK calls `enableLocalVideo(false)` to disable video capture. */
+  DisableLocalVideo = 'disable-local-video',
+  /** Reports events during the media stream relay. */
+  ChannelMediaRelayevent = 'channel-media-relay-event"',
+  /** Occurs when the state of the media stream relay changes. */
+  ChannelMediaRelaystate = 'channel-media-relay-state',
 }

@@ -167,7 +167,21 @@ export interface StreamSpec {
    */
   screen?: boolean;
   /**
-   * The stream ID.
+   * Marks whether to share the audio playback when sharing the screen.
+   * - `true`: Share the local audio playback when sharing the screen.
+   * - `false`: (Default) Do not share the local audio playback when sharing the screen.
+   *
+   * To share the local audio playback when sharing the screen, ensure that you set [screen](https://docs.agora.io/en/Voice/API%20Reference/web/interfaces/agorartc.streamspec.html#screen) as `true`.
+   * We recommend also setting [audio](https://docs.agora.io/en/Voice/API%20Reference/web/interfaces/agorartc.streamspec.html#audio) as `false`.
+   * If both `screenAudio` and `audio` are set as `true`, the stream only contains the local audio playback.
+   *
+   * @remarks
+   * This function supports only Chrome 73 or later on Windows.
+   * For the audio sharing to take effect, the user must check Share audio in the pop-up window when sharing the screen.
+   */
+  screenAudio?: boolean;
+  /**
+   * The stream ID
    *
    * Please set the stream ID as the user ID, which can be retrieved from the callback of
    * [Client.join](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#join).

@@ -32,3 +32,6 @@ export * from './transport-stats.model';
 export * from './turn-server.model';
 export * from './video-play-options.model';
 export * from './video-encoder-configuration.model';
+export * from './beauty-effect-options.model';
+export * from './channel-media-relay-configuration.model';
+export * from './channel-media-error.model';

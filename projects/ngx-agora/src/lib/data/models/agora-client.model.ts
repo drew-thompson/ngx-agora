@@ -12,6 +12,8 @@ import { SubscribeOptions } from './subscribe-options.model';
 import { SystemStats } from './system-stats.model';
 import { TransportStats } from './transport-stats.model';
 import { TurnServer } from './turn-server.model';
+import { ChannelMediaRelayConfiguration } from './channel-media-relay-configuration.model';
+import { ChannelMediaError } from './channel-media-error.model';
 
 /**
  * The Client object returned by the [createClient](https://docs.agora.io/en/Video/API%20Reference/web/globals.html#createclient)
@@ -543,6 +545,31 @@ export interface AgoraClient {
    * @see [setTurnServer](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#setturnserver)
    */
   setTurnServer: (turnServer: TurnServer) => void;
+  /**
+   * Starts relaying media streams across channels.
+   * @param config Configurations of the media stream relay: [ChannelMediaRelayConfiguration](channelmediarelayconfiguration).
+   * @param callback The result of starting the media stream relay.
+   *
+   * @remark
+   * Contact sales-us@agora.io to enable this function.
+   */
+  startChannelMediaRelay: (config: ChannelMediaRelayConfiguration, callback: (err: null | ChannelMediaError) => void) => void;
+  /**
+   * Updates the channels for media stream relay.
+   * @param config Configurations of the media stream relay: [ChannelMediaRelayConfiguration](channelmediarelayconfiguration).
+   * @param callback The result of updating the destination channels.
+   */
+  updateChannelMediaRelay: (config: ChannelMediaRelayConfiguration, callback: (err: null | ChannelMediaError) => void) => void;
+  /**
+   * Stops the media stream relay.
+   *
+   * After this method call, the SDK triggers the Client.on("channel-media-relay-state") callback.
+   * @param callback The result of stopping the media stream relay.
+   *
+   * @remark
+   * Contact sales-us@agora.io to enable this function.
+   */
+  stopChannelMediaRelay: (callback: (err: null | ChannelMediaError) => void) => void;
   /**
    * This method starts a live stream.
    *
