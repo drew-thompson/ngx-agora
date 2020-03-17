@@ -3,15 +3,15 @@
   "version": "1.5.14",
   "schematics": "./schematics/collection.json",
   "peerDependencies": {
-    "@angular/common": "^7.0.0",
-    "@angular/core": "^7.0.0",
-    "@angular/cdk": "^7.0.0",
+    "@angular/common": "^8.2.0",
+    "@angular/core": "^8.2.0",
+    "@angular/cdk": "^8.2.0",
     "agora-rtc-sdk": "^2.4.1"
   },
-  "description": "Angular 7 wrapper for Agora RTC client (https://www.agora.io/en/)",
+  "description": "Angular 8 wrapper for Agora RTC client (https://www.agora.io/en/)",
   "main": "ngx-agora.module.ts",
   "devDependencies": {
-    "@angular/cdk": "^7.0.0",
+    "@angular/cdk": "^8.2.0",
     "agora-rtc-sdk": "^2.4.1"
   },
   "scripts": {
