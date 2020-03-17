@@ -12,13 +12,13 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@angular-devkit/core": "^7.3.8",
-    "@angular-devkit/schematics": "^7.3.8",
-    "@angular/cdk": "^7.3.7",
-    "@schematics/angular": "^7.3.8",
-    "@types/jasmine": "^3.0.0",
-    "@types/node": "^8.0.31",
-    "jasmine": "^3.0.0",
-    "typescript": "~3.2.2"
+    "@angular-devkit/core": "8.3.25",
+    "@angular-devkit/schematics": "8.3.25",
+    "@angular/cdk": "^8.2.3",
+    "@schematics/angular": "8.3.25",
+    "@types/jasmine": "^3.5.9",
+    "@types/node": "^12.12.30",
+    "jasmine": "^3.5.0",
+    "typescript": "~3.5.3"
   }
 }

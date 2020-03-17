@@ -11,7 +11,7 @@
   "description": "Angular 8 wrapper for Agora RTC client (https://www.agora.io/en/)",
   "main": "ngx-agora.module.ts",
   "devDependencies": {
-    "@angular/cdk": "^8.2.0",
+    "@angular/cdk": "^8.2.3",
     "agora-rtc-sdk": "^2.4.1"
   },
   "scripts": {
