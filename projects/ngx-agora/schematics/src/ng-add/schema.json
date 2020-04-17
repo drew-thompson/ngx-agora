@@ -27,9 +27,18 @@
       "x-prompt": {
         "message": "Choose a specific Agora.io SDK version, or \"latest\" for the latest published release:",
         "type": "list",
-        "items": [{
+        "items": [
+          {
             "value": "latest",
             "label": "Latest Release        [ Preview: https://www.npmjs.com/package/agora-rtc-sdk ]"
+          },
+          {
+            "value": "3.0.2",
+            "label": "3.0.2  [ Preview: https://www.npmjs.com/package/agora-rtc-sdk/v/3.0.2 ]"
+          },
+          {
+            "value": "2.9.0",
+            "label": "2.9.0  [ Preview: https://www.npmjs.com/package/agora-rtc-sdk/v/2.9.0 ]"
           },
           {
             "value": "2.6.1",
