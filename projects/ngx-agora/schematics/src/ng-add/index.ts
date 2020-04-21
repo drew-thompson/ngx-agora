@@ -22,19 +22,18 @@ import { Schema } from './schema';
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
 export default function (options: Schema): Rule {
-  return (tree: Tree, _context: SchematicContext) => {
+  return (tree: Tree, context: SchematicContext) => {
     return chain([
       addPackageJsonDependencies(options),
       installDependencies(),
       setupProject(options),
-    ])(tree, _context);
+    ])(tree, context);
   };
 }
 
 function addPackageJsonDependencies(options: Schema): Rule {
-  return (tree: Tree, _context: SchematicContext): any => {
+  return (tree: Tree, _: SchematicContext): any => {
     return of(
-      { name: '@angular/cdk', version: undefined },
       { name: 'agora-rtc-sdk', version: options.version },
       { name: 'ngx-agora', version: undefined }
     ).pipe(
@@ -54,16 +53,16 @@ function addPackageJsonDependencies(options: Schema): Rule {
 }
 
 function installDependencies(): Rule {
-  return (tree: Tree, _context: SchematicContext) => {
-    _context.addTask(new NodePackageInstallTask());
+  return (tree: Tree, context: SchematicContext) => {
+    context.addTask(new NodePackageInstallTask());
     return tree;
   };
 }
 
 function setupProject(options: Schema): Rule {
-  return (tree: Tree, _context: SchematicContext) => {
-    const installTaskId = _context.addTask(new NodePackageInstallTask());
-    _context.addTask(new RunSchematicTask('ng-add-setup-project', options), [
+  return (tree: Tree, context: SchematicContext) => {
+    const installTaskId = context.addTask(new NodePackageInstallTask());
+    context.addTask(new RunSchematicTask('ng-add-setup-project', options), [
       installTaskId,
     ]);
     return tree;
