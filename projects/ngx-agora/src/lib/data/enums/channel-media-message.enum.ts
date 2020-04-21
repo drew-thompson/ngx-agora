@@ -1,3 +1,6 @@
+/**
+ * Error message of the media stream relay.
+ */
 export enum ChannelMediaMessage {
   /** No error. */
   'RELAY_OK',
