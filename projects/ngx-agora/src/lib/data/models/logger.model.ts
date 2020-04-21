@@ -36,7 +36,7 @@ export interface Logger {
    * The log-upload function is disabled by default, if you need to enable this function,
    * please call this method before all the other methods.
    *
-   * @remarks
+   * @remark
    * If the user fails to join the channel, the log information is not available on Agora’s server.
    *
    * @example

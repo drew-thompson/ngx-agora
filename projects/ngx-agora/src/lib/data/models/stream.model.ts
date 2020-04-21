@@ -1,13 +1,16 @@
 import { StreamEvent } from '../enums/stream-event.enum';
+import { Volume } from '../types';
 import { AudioProfile } from '../types/audio-profile.type';
 import { ScreenProfile } from '../types/screen-profile.type';
 import { SoundId } from '../types/sound-id.type';
 import { VideoProfile } from '../types/video-profile.type';
 import { AudioEffectOptions } from './audio-effect-options.model';
 import { AudioMixingOptions } from './audio-mixing-options.model';
+import { BeautyEffectOptions } from './beauty-effect-options.model';
 import { LocalStreamStats } from './local-stream-stats.model';
 import { MediaStreamTrack } from './media-stream-track.model';
 import { RemoteStreamStats } from './remote-stream-stats.model';
+import { VideoEncoderConfiguration } from './video-encoder-configuration.model';
 import { VideoPlayOptions } from './video-play-options.model';
 
 /**
@@ -194,7 +197,9 @@ export interface Stream {
    * - If it is a subscribing stream, then the stats is
    *   [RemoteStreamStats](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.remotestreamstats.html).
    */
-  getStats: (callback: (stats: LocalStreamStats | RemoteStreamStats) => void) => void;
+  getStats: (
+    callback: (stats: LocalStreamStats | RemoteStreamStats) => void
+  ) => void;
   /**
    * This method retrieves the video track in the stream and can be used together with
    * [replaceTrack](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#replacetrack).
@@ -325,7 +330,10 @@ export interface Stream {
    *   }
    * });
    */
-  pauseEffect: (soundId: SoundId, callback?: (error: string | null) => void) => void;
+  pauseEffect: (
+    soundId: SoundId,
+    callback?: (error: string | null) => void
+  ) => void;
   /**
    * Plays the video or audio stream.
    *
@@ -375,7 +383,10 @@ export interface Stream {
    * @remark
    * The callbacks of the audio effect methods all use the Node.js callback pattern.
    */
-  playEffect: (options: AudioEffectOptions, callback?: (error: string | null) => void) => void;
+  playEffect: (
+    options: AudioEffectOptions,
+    callback?: (error: string | null) => void
+  ) => void;
   /**
    * Preloads a specified audio effect file into the memory.
    *
@@ -390,7 +401,11 @@ export interface Stream {
    *   }
    * });
    */
-  preloadEffect: (soundId: SoundId, filePath: string, callback?: (error: string | null) => void) => void;
+  preloadEffect: (
+    soundId: SoundId,
+    filePath: string,
+    callback?: (error: string | null) => void
+  ) => void;
   /**
    * Removes the audio or video tracks from the stream.
    *
@@ -433,7 +448,22 @@ export interface Stream {
    *   });
    *
    */
-  replaceTrack: (MediaStreamTrack: MediaStreamTrack, onSuccess?: () => void, onFailure?: (error: Error) => void) => void;
+  replaceTrack: (
+    MediaStreamTrack: MediaStreamTrack,
+    onSuccess?: () => void,
+    onFailure?: (error: Error) => void
+  ) => void;
+  /**
+   * Resumes the Audio/Video Stream Playback.
+   * This method can be used when the playback fails after calling the
+   * [Stream.play](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#play) method.
+   * In most cases, the playback is stopped due to the browser policy.
+   *
+   * This method needs to be triggered by a user gesture.
+   *
+   * @see [Autoplay Policy Changes](https://developers.google.com/web/updates/2017/09/autoplay-policy-changes) for more information.
+   */
+  resume: () => Promise<any>;
   /**
    * Resumes playing all audio effects.
    *
@@ -449,6 +479,8 @@ export interface Stream {
   resumeAllEffects: (callback?: (error: string | null) => void) => void;
   /**
    * Resumes audio mixing.
+   *
+   * When the audio mixing file playback resumes, the SDK triggers the `Stream.on("audioMixingPlayed")` callback on the local client.
    */
   resumeAudioMixing: (callback?: (error: string | null) => void) => void;
   /**
@@ -464,14 +496,20 @@ export interface Stream {
    *     }
    * });
    */
-  resumeEffect: (soundId: SoundId, callback?: (error: string | null) => void) => void;
+  resumeEffect: (
+    soundId: SoundId,
+    callback?: (error: string | null) => void
+  ) => void;
   /**
    * Sets the playback position of the audio mixing file to a different start position (by default plays from the beginning).
    *
    * @param position
    * The time (ms) to start playing the audio mixing file, an integer. The value range is `[0,100000000]`.
    */
-  setAudioMixingPosition: (position: number, callback?: (error: string | null) => void) => void;
+  setAudioMixingPosition: (
+    position: number,
+    callback?: (error: string | null) => void
+  ) => void;
   /**
    * Sets the audio output device for the remote stream. You can use it to switch between the microphone and the speakerphone.
    * It can be called either before or after the remote stream is played.
@@ -485,7 +523,11 @@ export interface Stream {
    *
    * The retrieved ID is ASCII characters, and the string length is greater than 0 and less than 256 bytes.
    */
-  setAudioOutput: (deviceId: string, onSuccess?: () => void, onFailure?: (error: string) => void) => void;
+  setAudioOutput: (
+    deviceId: string,
+    onSuccess?: () => void,
+    onFailure?: (error: string) => void
+  ) => void;
   /**
    * This method sets the audio profile.
    * It is optional and works only when called before
@@ -514,6 +556,46 @@ export interface Stream {
    */
   setAudioVolume: (volume: number) => void;
   /**
+   * Enables/Disables image enhancement and sets the options.
+   *
+   *
+   * This method supports the following browsers:
+   * - Safari 12 or later
+   * - Chrome 65 or later
+   * - Firefox 70.0.1 or later
+   *
+   * @remark
+   * - This function does not support mobile devices.
+   * - If the dual-stream mode is enabled
+   *   ([enableDualStream](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#enabledualstream)),
+   *   the image enhancement options apply only to the high-video stream.
+   * - If image enhancement is enabled, you must call this method to disable it before calling the following methods:
+   *  - [leave](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#leave)
+   *  - [stop](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#stop)
+   *  - [removeTrack](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#removetrack)
+   *  - [unpublish](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#unpublish)
+   *
+   * - The image enhancement function involves real-time compute-intensive processing.
+   *   Though it is based on hardware acceleration, the processing has high GPU and CPU overheads.
+   *   For low-end devices, enabling image enhancement affects the system performance.
+   *   When the video resolution is set as 360p, 720p or higher, and the frame rate is set as 30 fps or 15 fps,
+   *   do not enable image enhancement.
+   *
+   * @example
+   * stream.setBeautyEffectOptions(true, {
+   *     lighteningContrastLevel: 1,
+   *     lighteningLevel: 0.7,
+   *     smoothnessLevel: 0.5,
+   *     rednessLevel: 0.1
+   * });
+   *
+   * @since 3.0.0
+   */
+  setBeautyEffectOptions: (
+    enabled: boolean,
+    options: BeautyEffectOptions
+  ) => void;
+  /**
    * Sets the volume of the audio effects.
    *
    * @param volume
@@ -528,7 +610,10 @@ export interface Stream {
    *     }
    * });
    */
-  setEffectsVolume: (volume: number, callback?: (error: string | null) => void) => void;
+  setEffectsVolume: (
+    volume: number,
+    callback?: (error: string | null) => void
+  ) => void;
   /**
    * This method sets the profile of the screen in screen-sharing.
    *
@@ -540,15 +625,76 @@ export interface Stream {
    */
   setScreenProfile: (profile: ScreenProfile) => void;
   /**
-   * Sets the stream's video profile.
-   * It is optional and works only when called before
+   * Customizes the Video Encoder Configuration.
+   * You can use this method to customize the video resolution, frame rate, and bitrate of the local stream.
+   * This method can be called before or after
    * [Stream.init](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#init).
-   * The default value is `'480p_1'`.
+   *
+   * @remark
+   * - Do not call this method when publishing streams.
+   * - If you enable dual streams
+   *   ([enableDualStream](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#enabledualstream)),
+   *   we do not support increasing the video resolution in this method.
+   *   This is a [known issue](https://bugs.chromium.org/p/chromium/issues/detail?id=768205) of Chromium.
+   * - On some iOS devices, when you update the video encoder configuration after
+   *   [Stream.init](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#init),
+   *   black bars might appear around your video.
+   * - The actual resolution, frame rate, and bitrate depend on the device,
+   *   see [Media​Stream​Track​.apply​Constraints()](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/applyConstraints)
+   *   for more information.
+   * - This method works on Chrome 63 or later and is not fully functional on other browsers with the following issues:
+   *  - The frame rate setting does not take effect on Safari 12 or earlier.
+   *  - Safari 11 or earlier only supports specific resolutions.
+   *  - Safari on iOS does not support low resolutions in H.264 codec.
+   *
+   * @example
+   * stream.setVideoEncoderConfiguration({
+   *  // Video resolution
+   *  resolution: {
+   *      width: 640,
+   *      height: 480
+   *  },
+   *  // Video encoding frame rate. We recommend 15 fps. Do not set this to a value greater than 30.
+   *  frameRate: {
+   *      min: 15,
+   *      max: 30
+   *  },
+   *  // Video encoding bitrate.
+   *  bitrate: {
+   *      min: 1000,
+   *      max: 5000
+   *  }
+   * });
+   */
+  setVideoEncoderConfiguration: (config: VideoEncoderConfiguration) => void;
+  /**
+   * Sets the stream's video profile.
+   *
+   * This method sets the video encoding profile for the local stream. Each video encoding profile includes a set of parameters,
+   * such as the resolution,frame rate, and bitrate. The default value is `"480p_1"`.
+   *
+   * This method is optional and is usually called before
+   * [Stream.init](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#init).
+   * From v2.7, you can also call this method after
+   * [Stream.init](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#init)
+   * to change the video encoding profile.
    *
    * @example
    * setVideoProfile("480p");
    *
    * @remark
+   * - Do not call this method when publishing streams.
+   * - If you enable dual streams
+   *   ([enableDualStream](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#enabledualstream)),
+   *   we do not support increasing the video resolution in this method. This is a
+   *   [known issue](https://bugs.chromium.org/p/chromium/issues/detail?id=768205) of Chromium.
+   * - On some iOS devices, when you update the video profile after
+   *   [Stream.init](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#init),
+   *   black bars might appear around your video.
+   * - Changing the video profile after
+   *   [Stream.init](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#init) works only on
+   *   Chrome 63 or later and Safari 11 or later.
+   *
    * - Whether 1080 resolution or above can be supported depends on the device. If the device cannot support 1080p, the actual frame rate
    *   is lower than the one listed in the table. Agora optimizes the video on low-end devices.
    * - The Safari browser does not support modifying the video frame rate (30 fps by default). If you set a frame rate other than 30 fps on
@@ -574,7 +720,11 @@ export interface Stream {
    *
    *
    */
-  setVolumeOfEffect: (soundId: SoundId, volume: number, callback?: (error: string | null) => void) => void;
+  setVolumeOfEffect: (
+    soundId: SoundId,
+    volume: Volume,
+    callback?: (error: string | null) => void
+  ) => void;
   /**
    * Starts Audio Mixing
    * This method mixes the specified online audio file with the audio stream from the microphone; or, it
@@ -604,7 +754,10 @@ export interface Stream {
    *     // Processes after stream playing
    * })
    */
-  startAudioMixing: (options: AudioMixingOptions, callback?: (error: string | null) => void) => void;
+  startAudioMixing: (
+    options: AudioMixingOptions,
+    callback?: (error: string | null) => void
+  ) => void;
   /**
    * Stops the Audio/Video Stream
    *
@@ -627,6 +780,8 @@ export interface Stream {
   stopAllEffects: (callback: (error: string | null) => void) => void;
   /**
    * Stops audio mixing.
+   *
+   * When the audio mixing file playback is stopped, the SDK triggers the `Stream.on("audioMixingFinished")` callback on the local client.
    */
   stopAudioMixing: (callback: (error: string | null) => void) => void;
   /**
@@ -642,7 +797,10 @@ export interface Stream {
    *   }
    * });
    */
-  stopEffect: (soundId: SoundId, callback?: (error: string | null) => void) => void;
+  stopEffect: (
+    soundId: SoundId,
+    callback?: (error: string | null) => void
+  ) => void;
   /**
    * Switches the media input device.
    *
@@ -656,12 +814,23 @@ export interface Stream {
    * and the string length is greater than 0 and less than 256 bytes.
    * @remark
    * This method does not support the following scenarios:
-   * - Dual-stream mode is enabled by enableDualStream.
+   * - Dual-stream mode is enabled by
+   *   [enableDualStream](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#enabledualstream).
    * - The remote stream.
-   * - The stream is created by defining the audioSource and videoSource properties.
+   * - The stream is created by defining the
+   *   [audioSource](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.streamspec.html#audiosource)
+   *   and [videoSource](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.streamspec.html#videosource) properties.
    * - The Firefox browser.
+   *
+   * @remark
+   * This method might not take effect on some mobile devices.
    */
-  switchDevice: (type: 'audio' | 'video', deviceId: string, onSuccess?: () => void, onFailure?: (error: string) => void) => void;
+  switchDevice: (
+    type: 'audio' | 'video',
+    deviceId: string,
+    onSuccess?: () => void,
+    onFailure?: (error: string) => void
+  ) => void;
   /**
    * Releases a specified preloaded audio effect from the memory.
    *
@@ -674,14 +843,20 @@ export interface Stream {
    *       console.log("Effect is unloaded successfully");
    *   }
    * });
+   *
    */
-  unloadEffect: (soundId: SoundId, callback?: (error: string | null) => void) => void;
+  unloadEffect: (
+    soundId: SoundId,
+    callback?: (error: string | null) => void
+  ) => void;
   /**
    * Enables the audio track in the stream.
    *
    * @remark
    * For local streams, it works only when the audio flag is `true` in the stream.
-   * By default the audio track is enabled. If you call muteAudio, call this method to enable audio.
+   * By default the audio track is enabled. If you call
+   * [muteAudio](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#muteaudio),
+   * call this method to enable audio.
    *
    * @returns void ([Docs unclear](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#unmuteaudio))
    * - `true`: Success.
@@ -694,9 +869,11 @@ export interface Stream {
    * @remark
    * For local streams, it works only when the video flag is true in the stream.
    *
-   * By default the video track is enabled. If you call muteVideo, call this method to enable video.
+   * By default the video track is enabled. If you call
+   * [muteVideo](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#mutevideo),
+   * call this method to enable video.
    *
-   * @returns void ([Docs unclear](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#mutevideo))
+   * @returns void ([Docs unclear](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.stream.html#unmutevideo))
    * - `true`: Success.
    * - `false`: Failure. Possible reasons include no video, stream not initialized, and video track already enabled.
    */

@@ -1,5 +1,7 @@
 import { ClientEvent } from '../enums/client-event.enum';
 import { ConnectionState } from '../types/connection-state.type';
+import { ChannelMediaError } from './channel-media-error.model';
+import { ChannelMediaRelayConfiguration } from './channel-media-relay-configuration.model';
 import { InjectStreamConfig } from './inject-stream-config.model';
 import { LiveTranscoding } from './live-transcoding.model';
 import { LocalAudioStatsMap } from './local-audio-stats-map.model';
@@ -22,18 +24,37 @@ import { TurnServer } from './turn-server.model';
 export interface AgoraClient {
   /**
    * Injects an Online Media Stream to a Live Broadcast
-   * @param url URL address of the live streaming. ASCII characters only, and the string length must be greater
-   * than 0 and less than 256 bytes. Valid protocols are RTMP, HLS, and FLV.
-   *  - Supported FLV audio codec type: AAC.
-   *  - Supported FLV video codec type: H.264 (AVC).
    *
-   * @param config Configuration of the inject stream
-   * @see [InjectStreamConfig](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.injectstreamconfig.html)
-   * @description
-   * The streamInjectedStatus callback returns the inject status.If this method
-   * is called successfully, the server pulls the voice or video stream and injects
-   * it into a live channel. This is applicable to scenarios where all of the audience
-   * members in the channel can watch a live show and interact with each other.
+   * If this method is called successfully, the server pulls the voice or video stream and
+   * injects it into a live channel. This is applicable to scenarios where all of the audience members
+   * in the channel can watch a live show and interact with each other.
+   *
+   *
+   * This method call triggers the following callbacks:
+   *
+   * - On the local client:
+   *   - `Client.on("streamInjectedStatus")`, with the state of injecting the online stream.
+   *   - `Client.on("stream-added")` and `Client.on("peer-online")` (uid: 666), if the online media stream is injected into the channel.
+   *
+   * - On the remote client:
+   *   - `Client.on("stream-added")` and `Client.on("peer-online")` (uid: 666), if the online media stream is injected into the channel.
+   *
+   * @remarks
+   * You can only inject one online media stream into the same channel at the same time.
+   * Ensure that you [enable the RTMP Converter service](https://docs.agora.io/en/Video/cdn_streaming_web#prerequisites)
+   * before using this function.
+   *
+   * @param url URL address of the live streaming.
+   * ASCII characters only, and the string length must be greater than 0 and less than 256 bytes.
+   * Valid protocols are RTMP, HLS, and HTTP-FLV.
+   *
+   * - Supported FLV audio codec type: AAC.
+   * - Supported FLV video codec type: H.264 (AVC).
+   *
+   * @param config Configuration of the inject stream, see
+   * [InjectStreamConfig](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.injectstreamconfig.html) for details.
+   *
+   * @see [Inject an Online Media Stream](https://docs.agora.io/en/Interactive%20Broadcast/inject_stream_web?platform=Web) for details.
    */
   addInjectStreamUrl: (url: string, config: InjectStreamConfig) => void;
   /**
@@ -56,7 +77,13 @@ export interface AgoraClient {
    *  publishUrl: "rtmp://xxx/xxx/"
    * });
    */
-  configPublisher: (width: number, height: number, framerate: number, bitrate: number, publisherUrl: string) => void;
+  configPublisher: (
+    width: number,
+    height: number,
+    framerate: number,
+    bitrate: number,
+    publisherUrl: string
+  ) => void;
   /**
    * Disables dual streams.
    *
@@ -67,7 +94,10 @@ export interface AgoraClient {
    *   console.log(err)
    * })
    */
-  disableDualStream: (onSuccess?: () => any, onFailure?: (error: Error) => any) => void;
+  disableDualStream: (
+    onSuccess?: () => any,
+    onFailure?: (error: Error) => any
+  ) => void;
   /**
    * Enables the SDK to report the active remote users who are speaking and their volume regularly.
    *
@@ -106,7 +136,10 @@ export interface AgoraClient {
    * - Safari browser on iOS
    * - Screen-sharing scenario
    */
-  enableDualStream: (onSuccess?: () => any, onFailure?: (error: Error) => any) => void;
+  enableDualStream: (
+    onSuccess?: () => any,
+    onFailure?: (error: Error) => any
+  ) => void;
   /**
    * Enumerates the available video input devices, such as cameras.
    *
@@ -250,16 +283,20 @@ export interface AgoraClient {
    * @param [onFailure] The callback when the method fails.
    *
    * @example
-   * client.init(appId, function() {
+   * client.init(appId, () => {
    * console.log("client initialized");
    * // Join a channel
    * //……
-   * }, function(err) {
+   * }, err => {
    *     console.log("client init failed ", err);
    *     // Error handling
    * });
    */
-  init: (appId: string, onSuccess?: () => void, onFailure?: (error: Error) => void) => void;
+  init: (
+    appId: string,
+    onSuccess?: () => void,
+    onFailure?: (error: Error) => void
+  ) => void;
   /**
    * Joins an AgoraRTC Channel
    * This method joins an AgoraRTC channel.
@@ -319,6 +356,17 @@ export interface AgoraClient {
    */
   leave: (onSuccess?: () => void, onFailure?: (error: Error) => void) => void;
   /**
+   * This method removes the events attached by the Client.on() method.
+   *
+   * @example
+   * client.on("stream-published", function processStreamPublished(evt) {
+   *  console.log("Stream Published");
+   *  evt.stream.play("divId");
+   *  client.off("stream-published", processStreamPublished);
+   * })
+   */
+  off: (eventType: ClientEvent, callback: (evt: any) => void) => void;
+  /**
    * Occurs when an Agora.io event connected to the local client is received from the SDK.
    *
    * @see [On](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#on)
@@ -357,7 +405,11 @@ export interface AgoraClient {
    * When the onFailure callback reports the error DYNAMIC_KEY_TIMEOUT, the application should renew the
    * Channel Key by calling this method. Not doing so will result in SDK disconnecting with the server.
    */
-  renewChannelKey: (key: string, onSuccess?: () => void, onFailure?: (error: Error) => void) => void;
+  renewChannelKey: (
+    key: string,
+    onSuccess?: () => void,
+    onFailure?: (error: Error) => void
+  ) => void;
   /**
    * This method renews your token.
    *
@@ -401,7 +453,10 @@ export interface AgoraClient {
    *    console.log("setHost failed", e);
    *  })
    */
-  setClientRole: (role: 'audience' | 'host', callback?: (error: Error) => void) => void;
+  setClientRole: (
+    role: 'audience' | 'host',
+    callback?: (error: Error) => void
+  ) => void;
   /**
    * This method sets the encryption mode.
    *
@@ -414,7 +469,9 @@ export interface AgoraClient {
    * - aes-256-xts: Sets the encryption mode as AES256XTS.
    * - aes-128-ecb: Sets the encryption mode as AES128ECB.
    */
-  setEncryptionMode: (encryptionMode: 'aes-128-xts' | 'aes-256-xts' | 'aes-128-ecb') => void;
+  setEncryptionMode: (
+    encryptionMode: 'aes-128-xts' | 'aes-256-xts' | 'aes-128-ecb'
+  ) => void;
   /**
    * This method enables the built-in encryption.
    *
@@ -454,7 +511,12 @@ export interface AgoraClient {
    *
    * @see [setLowStreamParameter](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#setlowstreamparameter)
    */
-  setLowStreamParameter: (param: { bitrate?: number; framerate?: number; height?: number; width?: number }) => void;
+  setLowStreamParameter: (param: {
+    bitrate?: number;
+    framerate?: number;
+    height?: number;
+    width?: number;
+  }) => void;
   /**
    * Deploys the Nginx Server
    *
@@ -539,6 +601,32 @@ export interface AgoraClient {
    */
   setTurnServer: (turnServer: TurnServer) => void;
   /**
+   * Starts relaying media streams across channels.
+   *
+   * After this method call, the SDK triggers the following callbacks:
+   *
+   * - Client.on(`"channel-media-relay-state"`), which reports the state and error code of the media stream relay.
+   *  - If the media stream relay starts successfully, this callback returns `state` 2 and `code` 0.
+   *  - If the media stream relay fails, this callback returns `state` 3. Refer to `code` for the error code and call this method again.
+   *
+   * - Client.on(`"channel-media-relay-event"`), which reports the events of the media stream relay.
+   *  - If the media stream relay starts successfully, this callback returns `code` 4, reporting that the
+   *    SDK starts relaying the media stream to the destination channel.
+   *
+   * @remark
+   * - Contact sales-us＠agora.io to enable this function.
+   * - We do not support string user IDs in this API.
+   * - Call this method only after joining a channel.
+   * - In a live-broadcast channel, only a host can call this method.
+   * - To call this method again after it succeeds, you must call stopChannelMediaRelay to quit the current relay.
+   *
+   * @since 3.0.0
+   */
+  startChannelMediaRelay: (
+    config: ChannelMediaRelayConfiguration,
+    callback: (error?: ChannelMediaError) => void
+  ) => void;
+  /**
    * This method starts a live stream.
    *
    * @description
@@ -554,24 +642,109 @@ export interface AgoraClient {
    */
   startLiveStreaming: (url: string, enableTranscoding?: boolean) => void;
   /**
+   * Enables Cloud Proxy.
+   *
+   * This method must be called before joining the channel or after leaving the channel.
+   *
+   * To use the cloud proxy service, some extra settings are needed, see
+   * [Use Cloud Proxy](https://docs.agora.io/en/Interactive%20Broadcast/cloud_proxy_web?platform=Web) for details.
+   */
+  startProxyServer: () => void;
+  /**
+   * Stops the media stream relay. Once the relay stops, the user leaves all the destination channels.
+   *
+   * After this method call, the SDK triggers the `Client.on("channel-media-relay-state")` callback.
+   *
+   * - If the relay stops, the callback returns `state` 0.
+   * - If the relay fails to stop, the callback returns `state` 3 and `code` 2 or 8. The failure is usually due to poor network conditions.
+   *   You can call [Client.leave](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#leave)
+   *   to leave the channel and stop the relay.
+   *
+   * @since 3.0.0
+   * @example
+   * stopChannelMediaRelay: () => {
+   *  client.stopChannelMediaRelay(e => {
+   *    if(e) {
+   *      utils.notification(`stopChannelMediaRelay failed: ${JSON.stringify(e)}`);
+   *    } else {
+   *      utils.notification(`stopChannelMediaRelay success`);
+   *    }
+   *  });
+   * }
+   *
+   * @param callback The result of stopping the media stream relay.
+   */
+  stopChannelMediaRelay: (
+    callback: (error?: ChannelMediaError) => void
+  ) => void;
+  /**
    * This method stops and deletes the live streaming.
+   * When the live stream stops, the SDK triggers the `Client.on("liveStreamingStopped")` callback.
    *
    * @param url URL address of the live streaming. ASCII characters only, and
    * the string length must be greater than 0 and less than 256 bytes.
    */
   stopLiveStreaming: (url: string) => void;
   /**
+   * Disables Cloud Proxy.
+   *
+   * This method must be called before joining the channel or after leaving the channel.
+   *
+   * This method disables all proxy settings, including those set by
+   * [setProxyServer](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#setproxyserver) and
+   * [setTurnServer](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#setturnserver).
+   */
+  stopProxyServer: () => void;
+  /**
    * This method enables a user to subscribe to a remote stream.
+   *
+   * After the user subscribes to a remote stream, the SDK triggers the `Client.on("stream-subscribed")` callback.
+   * If the remote stream contains an audio track, the SDK also triggers the `Client.on("first-audio-frame-decode")` callback;
+   * if the remote stream contains a video track, the SDK also triggers the `Client.on("first-video-frame-decode")` callback.
    *
    * @example
    * client.subscribe(stream, err => {
    *    console.error("stream subscribe failed", err);
    *    //……
    * });
+   *
+   * Advanced
+   *
+   * This method can be called multiple times for a single remote stream,
+   * and enables you to switch between receiving/not receiving the video or audio data flexibly.
+   *
+   * @example
+   * // Initially, subscribe to the stream and receive only the video data
+   * client.subscribe(stream, {video: true, audio: false});
+   *
+   * // After a while, switch to receiving only the audio data
+   * client.subscribe(stream, {video: false, audio: true});
+   *
+   * @remarks
+   * - video and `audio` cannot be set as `false` at the same time. If you need to stop subscribing to the stream,
+   * call [Client.unsubscribe](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#unsubscribe) instead.
+   * - Safari does not support independent subscription. Set `options` as `null` for Safari,
+   * otherwise the `SAFARI_NOT_SUPPORTED_FOR_TRACK_SUBSCRIPTION` error occurs.
+   *
+   * @param stream Stream object, which represents the remote stream.
+   * @param [options] Sets whether to receive the video or audio data independently by the `video` and `audio` parameters.
+   * @param [onFailure] The callback when the method fails. The following are common errors:
+   * - `"SAFARI_NOT_SUPPORTED_FOR_TRACK_SUBSCRIPTION"`: Safari does not support independent subscription.
+   * - `"INVALID_OPERATION"`: The user is not in the channel, possibly because the user has not
+   *    joined the channel or the connection is interrupted.
+   * - `"SUBSCRIBE_STREAM_FAILED"`: The subscription fails, usually because the SDK has disconnected
+   *    from the Agora server when subscribing to the stream.
+   * - `"PEERCONNECTION_FAILED"`: Fails to establish the media transport channel.
    */
-  subscribe: (stream: Stream, options?: SubscribeOptions, onFailure?: (error: Error) => void) => void;
+  subscribe: (
+    stream: Stream,
+    options?: SubscribeOptions,
+    onFailure?: (error: Error) => void
+  ) => void;
   /**
    * Unpublishes the Local Stream.
+   *
+   * When the stream is unpublished, the `Client.on("stream-removed")` callback is triggered on the remote client.
    *
    * @param stream Stream object, which represents the local stream.
    *
@@ -580,6 +753,10 @@ export interface AgoraClient {
    *    console.log(err);
    *    //……
    * })
+   *
+   * @remarks
+   * In a live broadcast, the user role of a host switches to audience after unpublishing, and
+   * the `Client.on("peer-leave")` callback is triggered on the remote client.
    */
   unpublish: (stream: Stream, onFailure?: (error: Error) => void) => void;
   /**
@@ -595,6 +772,39 @@ export interface AgoraClient {
    *
    */
   unsubscribe: (stream: Stream, onFailure?: (error: Error) => void) => void;
+  /**
+   * Updates the channels for media stream relay.
+   *
+   * After the channel media relay starts, if you want to relay the media stream to more channels,
+   * or leave the current relay channel, you can call this method.
+   *
+   * After this method call, the SDK triggers the `Client.on("channel-media-relay-event")` callback.
+   * - If the update succeeds, the callback returns `code` 7.
+   * - If the update fails, the callback returns `code` 8, and the SDK also triggers the
+   * `Client.on("channel-media-relay-state")` callback with `state` 3. In this case, the media relay state is reset, and you need to call
+   * [startChannelMediaRelay](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#startchannelmediarelay)
+   * again to restart the relay.
+   *
+   * @remarks
+   * - Call this method after
+   * [startChannelMediaRelay](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.client.html#startchannelmediarelay).
+   * - You can add a maximum of four destination channels to a relay.
+   *
+   * @example
+   * client.updateChannelMediaRelay(channelMediaConfig, e => {
+   *   if (e) {
+   *     utils.notification(`updateChannelMediaRelay failed: ${JSON.stringify(e)}`);
+   *   } else {
+   *     utils.notification(`updateChannelMediaRelay success`);
+   *   }
+   * });
+   *
+   * @since 3.0.0
+   */
+  updateChannelMediaRelay: (
+    config: ChannelMediaRelayConfiguration,
+    callback: (error?: ChannelMediaError) => void
+  ) => void;
 
   /* Legacy properties from angular-agora-rtc */
   aesMode?: string;
