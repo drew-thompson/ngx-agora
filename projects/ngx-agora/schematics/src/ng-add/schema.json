@@ -37,8 +37,24 @@
             "label": "3.0.2  [ Preview: https://www.npmjs.com/package/agora-rtc-sdk/v/3.0.2 ]"
           },
           {
+            "value": "3.0.1",
+            "label": "3.0.1  [ Preview: https://www.npmjs.com/package/agora-rtc-sdk/v/3.0.1 ]"
+          },
+          {
+            "value": "3.0.0",
+            "label": "3.0.0  [ Preview: https://www.npmjs.com/package/agora-rtc-sdk/v/3.0.0 ]"
+          },
+          {
             "value": "2.9.0",
             "label": "2.9.0  [ Preview: https://www.npmjs.com/package/agora-rtc-sdk/v/2.9.0 ]"
+          },
+          {
+            "value": "2.8.0",
+            "label": "2.8.0  [ Preview: https://www.npmjs.com/package/agora-rtc-sdk/v/2.8.0 ]"
+          },
+          {
+            "value": "2.7.1",
+            "label": "2.7.1  [ Preview: https://www.npmjs.com/package/agora-rtc-sdk/v/2.7.1 ]"
           },
           {
             "value": "2.6.1",
