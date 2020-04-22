@@ -3,7 +3,16 @@
 
 # ngx-agora
 
-> Angular 7 wrapper for the Agora Web RTC client from [Agora.io](https://www.agora.io/en/)
+> Angular wrapper for the Agora Web RTC client from [Agora.io](https://www.agora.io/en/)
+
+## Compatibility
+
+To use this library, please follow the versioning specified in the following table.
+
+| Angular Version | `ngx-agora` Version |
+| --------------- | ------------------- |
+| 7.x             | 1.x                 |
+| 8.x             | 2.x                 |
 
 ## Credits
 
@@ -35,17 +44,12 @@ const agoraConfig: AgoraConfig = {
 };
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    NgxAgoraModule.forRoot(agoraConfig)
-  ],
+  declarations: [AppComponent],
+  imports: [BrowserModule, NgxAgoraModule.forRoot(agoraConfig)],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
 ```
 
 You can then inject the `NgxAgoraService` into your components constructor and call `createClient()` to create the broadcast client object
@@ -60,19 +64,17 @@ import { NgxAgoraService } from 'ngx-agora';
     this.agoraService.createClient();
   }
   ...
-  ```
-  
-  Once the client is created and initialization is complete, the user can now join the session by calling `client.join()`. Pass the channel key, channel name, and user ID to the method parameters:
-  
-  ```ts
+```
 
-      this.agoraService.client.join(null, '1000', null, (uid) => {
-    });
-  ```
+Once the client is created and initialization is complete, the user can now join the session by calling `client.join()`. Pass the channel key, channel name, and user ID to the method parameters:
 
-* Channel key: String used for broadcast security. For low security requirements, pass null as the parameter value.
-* Channel name: String that provides a unique channel name for the Agora session. This should be a numerical value for the Web SDK. The sample app uses channel.value (the value from the Channel UI text field).
-* User ID: The user ID is a 32-bit unsigned integer ranging from 1 to (2^32-1). If you set the user ID to null, the Agora server allocates a user ID and returns it in the onSuccess callback. If you decide to enter a specific user ID, make sure the integer is unique or an error will occur.
+```ts
+this.agoraService.client.join(null, '1000', null, (uid) => {});
+```
+
+- Channel key: String used for broadcast security. For low security requirements, pass null as the parameter value.
+- Channel name: String that provides a unique channel name for the Agora session. This should be a numerical value for the Web SDK. The sample app uses channel.value (the value from the Channel UI text field).
+- User ID: The user ID is a 32-bit unsigned integer ranging from 1 to (2^32-1). If you set the user ID to null, the Agora server allocates a user ID and returns it in the onSuccess callback. If you decide to enter a specific user ID, make sure the integer is unique or an error will occur.
 
 **Note:** Users in the same channel can talk to each other, but users with different app IDs cannot call each other even if they join the same channel.
 
@@ -80,26 +82,26 @@ Once this method is called successfully, the SDK triggers the callback with the 
 
 ### Create and Manage a Stream
 
-* Host a Stream
-* Create a Stream
-* Set the Stream Video Profile
-* Set the Stream Event Listeners for Camera and Microphone Access
+- Host a Stream
+- Create a Stream
+- Set the Stream Video Profile
+- Set the Stream Event Listeners for Camera and Microphone Access
 
 #### Host a Stream
 
-If a user who has joined the stream will act as the host, the app must create a stream. 
+If a user who has joined the stream will act as the host, the app must create a stream.
 
 #### Create a Stream
 
 If the user is a host, start the stream using the `this.agoraService.createStream()` method. The sample app passes in an object with the following properties:
 `this.localStream = this.agoraService.createStream(uid, true, null, null, true, false);`
 
-* streamID: The stream ID. Normally the stream ID is set as the user ID, which can be retrieved from the client.join() callback.
-* audio: Indicates if this stream contains an audio track.
-* cameraId: (Optional, defaults to first camera device found) All available video devices can be found by calling `agoraService.videoDevices`
-* microphoneId: (Optional, defaults to the first audio device found) All available audio devices can be found by calling `agoraService.audioDevices`
-* video: Indicates if this stream contains a video track.
-* screen: Indicates if this stream contains a screen sharing track. Currently screen sharing is only supported by the Google Chrome Explorer.
+- streamID: The stream ID. Normally the stream ID is set as the user ID, which can be retrieved from the client.join() callback.
+- audio: Indicates if this stream contains an audio track.
+- cameraId: (Optional, defaults to first camera device found) All available video devices can be found by calling `agoraService.videoDevices`
+- microphoneId: (Optional, defaults to the first audio device found) All available audio devices can be found by calling `agoraService.audioDevices`
+- video: Indicates if this stream contains a video track.
+- screen: Indicates if this stream contains a screen sharing track. Currently screen sharing is only supported by the Google Chrome Explorer.
 
 The createStream object is set up for additional optional attributes. See the Agora API documentation for more information.
 
@@ -107,31 +109,38 @@ The createStream object is set up for additional optional attributes. See the Ag
 
 If the user is a host, the video profile must be set. The sample app sets the video profile to 720p_3, which represents a resolution of 1280x720, frame rate (fps) of 30, and a bitrate (kbps) of 1710. See the Agora API documentation for additional video profile options.
 `localStream.setVideoProfile('720p_3');`
-  
+
 #### Set the Stream Event Listeners for Camera and Microphone Access
 
 Once the stream has been set up and configured, the sample app adds event listeners using the `localStream.on()` method to check for the user's microphone and camera permissions. These event listeners are used for debugging and to send alerts to request permissions. The sample app uses console logs to check if access to the camera and microphone was allowed or denied by the user.
 
 ```ts
-    // The user has granted access to the camera and mic.
-    this.localStream.on(StreamEvent.MediaAccessAllowed, () => {
-      console.log("accessAllowed");
-    });
-    // The user has denied access to the camera and mic.
-    this.localStream.on(StreamEvent.MediaAccessDenied, () => {
-      console.log("accessDenied");
-    });
+// The user has granted access to the camera and mic.
+this.localStream.on(StreamEvent.MediaAccessAllowed, () => {
+  console.log('accessAllowed');
+});
+// The user has denied access to the camera and mic.
+this.localStream.on(StreamEvent.MediaAccessDenied, () => {
+  console.log('accessDenied');
+});
 ```
 
-  Next, the sample app initializes the stream by calling the `localStream.init()` method. Once initialized, the stream's host publishes the stream using the `client.publish()` method.
-  
-  ```ts
-      this.localStream.init(() => {
-      console.log("getUserMedia successfully");
-      this.localStream.play('agora_local');
-      this.agoraService.client.publish(this.localStream, err => console.log("Publish local stream error: " + err));
-      this.agoraService.client.on(ClientEvent.LocalStreamPublished, evt => console.log("Publish local stream successfully"));
-    }, err => console.log("getUserMedia failed", err));
+Next, the sample app initializes the stream by calling the `localStream.init()` method. Once initialized, the stream's host publishes the stream using the `client.publish()` method.
+
+```ts
+this.localStream.init(
+  () => {
+    console.log('getUserMedia successfully');
+    this.localStream.play('agora_local');
+    this.agoraService.client.publish(this.localStream, (err) =>
+      console.log('Publish local stream error: ' + err)
+    );
+    this.agoraService.client.on(ClientEvent.LocalStreamPublished, (evt) =>
+      console.log('Publish local stream successfully')
+    );
+  },
+  (err) => console.log('getUserMedia failed', err)
+);
 ```
 
 #### Set-up Client Error Handling
@@ -143,16 +152,20 @@ Since the Channel Key has an expiration, the sample app checks for the error `DY
 **Note:** If the channel key is not renewed, the communication to the SDK will disconnect.
 
 ```ts
-    this.agoraService.client.on(ClientEvent.Error, (err) => {
-      console.log("Got error msg:", err.reason);
-      if (err.reason === 'DYNAMIC_KEY_TIMEOUT') {
-        this.agoraService.client.renewChannelKey("",() =>{
-          console.log("Renew channel key successfully");
-        }, (err) =>{
-          console.log("Renew channel key failed: ", err);
-        });
+this.agoraService.client.on(ClientEvent.Error, (err) => {
+  console.log('Got error msg:', err.reason);
+  if (err.reason === 'DYNAMIC_KEY_TIMEOUT') {
+    this.agoraService.client.renewChannelKey(
+      '',
+      () => {
+        console.log('Renew channel key successfully');
+      },
+      (err) => {
+        console.log('Renew channel key failed: ', err);
       }
-    });
+    );
+  }
+});
 ```
 
 #### Add a Stream to the Client
@@ -160,12 +173,12 @@ Since the Channel Key has an expiration, the sample app checks for the error `DY
 The stream-added event listener detects when a new stream is added to the client. The sample app subscribes the newly added stream to the client after a new stream is added to the client
 
 ```ts
-    this.agoraService.client.on(ClientEvent.RemoteStreamAdded, (evt) => {
-      const stream = evt.stream as Stream;
-      this.agoraService.client.subscribe(stream, (err) => {
-        console.log("Subscribe stream failed", err);
-      });
-    });
+this.agoraService.client.on(ClientEvent.RemoteStreamAdded, (evt) => {
+  const stream = evt.stream as Stream;
+  this.agoraService.client.subscribe(stream, (err) => {
+    console.log('Subscribe stream failed', err);
+  });
+});
 ```
 
 #### Subscribe a Stream to the Client and Add to the DOM
@@ -173,11 +186,12 @@ The stream-added event listener detects when a new stream is added to the client
 The sample app uses the `stream-subscribed` event listener to detect when a new stream has been subscribed to the client, and to retrieve its stream ID using the `stream.getId()` method.
 
 ```ts
-    this.agoraService.client.on(ClientEvent.RemoteStreamSubscribed, evt => {
-      const stream = evt.stream as Stream;
-      if (!this.remoteCalls.includes(`agora_remote${stream.getId()}`)) this.remoteCalls.push(`agora_remote${stream.getId()}`);
-      setTimeout(() => stream.play(`agora_remote${stream.getId()}`), 1000);
-    });
+this.agoraService.client.on(ClientEvent.RemoteStreamSubscribed, (evt) => {
+  const stream = evt.stream as Stream;
+  if (!this.remoteCalls.includes(`agora_remote${stream.getId()}`))
+    this.remoteCalls.push(`agora_remote${stream.getId()}`);
+  setTimeout(() => stream.play(`agora_remote${stream.getId()}`), 1000);
+});
 ```
 
 Once the stream has been added to the `remoteCalls` array, the sample app sets a one second timeout to allow the change detection to run and render the new div. Then to play the stream we call the stream.play() method, passing in the string agora_remote followed by the stream ID.
@@ -187,12 +201,14 @@ Once the stream has been added to the `remoteCalls` array, the sample app sets a
 If the stream is removed from the client, the `stream-removed` event listener is called, the sample app stops the stream from playing by calling the `stream.stop()` method. We then remove the stream from the `remoteCalls` array using the `filter()` method.
 
 ```ts
-    this.agoraService.client.on(ClientEvent.RemoteStreamRemoved, evt => {
-      const stream = evt.stream as Stream;
-      stream.stop();
-      this.remoteCalls = this.remoteCalls.filter(call => call !== `#agora_remote${stream.getId()}`);
-      console.log(`Remote stream is removed ${stream.getId()}`);
-    });
+this.agoraService.client.on(ClientEvent.RemoteStreamRemoved, (evt) => {
+  const stream = evt.stream as Stream;
+  stream.stop();
+  this.remoteCalls = this.remoteCalls.filter(
+    (call) => call !== `#agora_remote${stream.getId()}`
+  );
+  console.log(`Remote stream is removed ${stream.getId()}`);
+});
 ```
 
 #### Remove a Peer from the Client
@@ -200,14 +216,16 @@ If the stream is removed from the client, the `stream-removed` event listener is
 When the sample app detects that a peer leaves the client using the `peer-leave` event listener, it stops the stream from playing. We then remove the stream from the `remoteCalls` array using the `filter()` method.
 
 ```ts
-    this.agoraService.client.on(ClientEvent.PeerLeave, evt => {
-      const stream = evt.stream as Stream;
-      if (stream) {
-        stream.stop();
-        this.remoteCalls = this.remoteCalls.filter(call => call === `#agora_remote${stream.getId()}`);
-        console.log(`${evt.uid} left from this channel`);
-      }
-    });
+this.agoraService.client.on(ClientEvent.PeerLeave, (evt) => {
+  const stream = evt.stream as Stream;
+  if (stream) {
+    stream.stop();
+    this.remoteCalls = this.remoteCalls.filter(
+      (call) => call === `#agora_remote${stream.getId()}`
+    );
+    console.log(`${evt.uid} left from this channel`);
+  }
+});
 ```
 
 #### Leave a Channel

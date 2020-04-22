@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [2.0.0](https://github.com/drew-thompson/ngx-agora/compare/v1.6.0...v2.0.0) (2020-04-22)
+
+
+### Features
+
+* upgrade project to Angular v8 ([ce2c267](https://github.com/drew-thompson/ngx-agora/commit/ce2c267436dde6c9d5428a7c3bd0543eac25e8d5))
+
+
+
 ## [1.6.1](https://github.com/drew-thompson/ngx-agora/compare/v1.6.0...v1.6.1) (2020-04-22)
 
 

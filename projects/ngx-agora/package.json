@@ -1,16 +1,16 @@
 {
   "name": "ngx-agora",
-  "version": "1.6.1",
+  "version": "2.0.0",
   "schematics": "./schematics/collection.json",
   "peerDependencies": {
-    "@angular/common": "^7.2.0",
-    "@angular/core": "^7.2.0",
+    "@angular/common": "^8.0.0",
+    "@angular/core": "^8.0.0",
     "agora-rtc-sdk": "^2.6.1"
   },
-  "description": "Angular 7 wrapper for Agora RTC client (https://www.agora.io/en/)",
+  "description": "Angular wrapper for Agora RTC client (https://www.agora.io/en/)",
   "main": "ngx-agora.module.ts",
   "devDependencies": {
-    "@angular/cdk": "^7.0.0",
+    "@angular/cdk": "^8.0.0",
     "agora-rtc-sdk": "^3.0.2"
   },
   "scripts": {
