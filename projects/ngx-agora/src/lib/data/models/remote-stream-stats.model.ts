@@ -33,7 +33,7 @@ export interface RemoteStreamStats extends StreamStats {
   /** Number of lost packets of the received video. */
   videoReceivePacketsLost: string;
   /** Resolution height of the received video. */
-  videoReceivedResolutionHeight?: string;
+  videoReceiveResolutionHeight?: string;
   /** Resolution width of the received video. */
-  videoReceivedResolutionWidth?: string;
+  videoReceiveResolutionWidth?: string;
 }
