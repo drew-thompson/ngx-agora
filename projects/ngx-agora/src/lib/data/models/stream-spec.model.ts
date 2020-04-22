@@ -4,7 +4,7 @@ import { MediaStreamTrack } from './media-stream-track.model';
  * A class defining the `spec` paramter in the
  * [createStream](https://docs.agora.io/en/Video/API%20Reference/web/globals.html#createstream) method.
  *
- *  * @remarks
+ *  * @remark
  * - Do not set `video` and `screen` as `true` at the same time.
  * - To enable screen-sharing on the Firefox browser, ensure that the `screen` property is
  * set to `true`, and the `mediaSource` property has been set to specify a certain sharing mode.
@@ -51,7 +51,7 @@ import { MediaStreamTrack } from './media-stream-track.model';
  *     });
  * });
  *
- * @remarks
+ * @remark
  * - `MediaStreamTrack` refers to the `MediaStreamTrack` object supported by the browser.
  * - Currently this option only supports the Chrome brower.
  *
@@ -95,9 +95,9 @@ export interface StreamSpec {
    * @param [ANS] Whether to enable automatic noise suppression.
    * The default value is true (enable). If you wish not to enable automatic noise suppression, set ANS as false.
    *
-   * @remarks
+   * @remark
    * - Safari does not support this setting.
-   * - Noise suppression is always enabled on Firefox. Setting ANS as false does not take effect on Firefox.
+   * - Noise suppression is always enabled on Firefox. Setting `ANS` as `false` does not take effect on Firefox.
    */
   audioProcessing?: {
     AEC?: boolean;
@@ -109,31 +109,43 @@ export interface StreamSpec {
    */
   audioSource?: MediaStreamTrack;
   /**
-   * The camera device ID retrieved from the getDevices method.
+   * The camera device ID retrieved from the [getDevices](https://docs.agora.io/en/Video/API%20Reference/web/globals.html#getdevices)
+   * method.
    *
    * The retrieved ID is ASCII characters, and the string length is greater than 0 and less than 256 bytes.
+   *
+   * When the string length is 0, this property is ignored.
    */
   cameraId?: string;
   /**
    * The extension ID of the Chrome screen-sharing extension.
    *
    * ASCII characters only, and the string length must be greater than 0 and less than 256 bytes.
-   * Set this property if you use the Chrome screen-sharing extension. See Chrome Extension for Screen Sharing for details.
+   * Set this property if you use the Chrome screen-sharing extension.
+   * @see [Chrome Extension for Screen Sharing](https://docs.agora.io/en/Video/chrome_screensharing_plugin?platform=Web) for details.
    *
-   * @remarks
+   * @remark
    * Chrome 72 and later versions support screen sharing without the extension. You can leave extensionId as empty.
-   * If you set the extensionId, then you need to use the screen-sharing extension.
+   * If you set the `extensionId`, then you need to use the screen-sharing extension.
    */
   extensionId?: string;
+  /**
+   * Sets using the front or rear camera.
+   *
+   * You can set this parameter to use the front or rear camera on mobile devices:
+   * - `"user"`: The front camera
+   * - `"environment"`: The rear camera
+   */
+  facingMode?: 'user' | 'environment';
   /**
    * The screen-sharing mode on the Firefox browser.
    *
    * If you are using the Firefox browser, setting this property specifies the screen-sharing mode:
-   * - "screen": (default) share the current screen
-   * - "application": share all windows of an App
-   * - "window": share a specified window of an App
+   * - `"screen"`: (default) share the current screen
+   * - `"application"`: share all windows of an App
+   * - `"window"`: share a specified window of an App
    *
-   * @remarks
+   * @remark
    * Firefox on Windows does not support the application mode.
    *
    * @see
@@ -146,18 +158,43 @@ export interface StreamSpec {
    * [getDevices](https://docs.agora.io/en/Video/API%20Reference/web/globals.html#getdevices) method.
    *
    * The retrieved ID is ASCII characters, and the string length is greater than 0 and less than 256 bytes.
+   *
+   * When the string length is 0, this property is ignored.
    */
   microphoneId?: string;
   /**
-   * Whether the video image of the publisher is mirrored on the publisher’s webpage.
-   * The default value is `true` (except in the screen-share mode). Agora recommends enabling this function
-   * when using the front camera, and disabling it when using the rear camera.
+   * Marks whether to mirror the local video image of the publisher in the local preview.
+   *
+   * This setting does not take effect in screen-sharing streams.
+   * - `true`: (Default) Mirror the local video.
+   * - `false`: Do not mirror the local video.
+   *
+   * Agora recommends enabling this function when using the front camera, and disabling it when using the rear camera.
    */
   mirror?: boolean;
   /**
    * Whether this stream contains a screen-sharing track.
+   *
+   * @see [Share the Screen](https://docs.agora.io/en/Video/screensharing_web?platform=Web) for details.
    */
   screen?: boolean;
+  /**
+   * Marks whether to share the audio playback when sharing the screen.
+   *
+   * - `true`: Share the local audio playback when sharing the screen.
+   * - `false`: (Default) Do not share the local audio playback when sharing the screen.
+   *
+   * To share the local audio playback when sharing the screen, ensure that you set screen as `true`.
+   * We recommend also setting [audio](https://docs.agora.io/en/Video/API%20Reference/web/interfaces/agorartc.streamspec.html#audio)
+   * as false. If both `screenAudio` and `audio` are set as `true`, the stream only contains the local audio playback.
+   *
+   * @remark
+   * - This function supports only Chrome 73 or later on Windows.
+   * - For the audio sharing to take effect, the user must check **Share audio** in the pop-up window when sharing the screen.
+   *
+   * @since 3.0.0
+   */
+  screenAudio?: boolean;
   /**
    * The stream ID.
    *
@@ -170,7 +207,7 @@ export interface StreamSpec {
   /**
    * Specifies the video source of the stream.
    *
-   * @remarks
+   * @remark
    * If you use a video source created by the Canvas API, re-draw on the canvas every one second
    * when the drawing is still to keep the video publishing.
    */

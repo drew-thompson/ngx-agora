@@ -1,3 +1,4 @@
+export * from './channel-media-message.enum';
 export * from './client-event.enum';
 export * from './codec-type.enum';
 export * from './log-level.enum';
