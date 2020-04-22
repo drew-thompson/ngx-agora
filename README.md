@@ -5,6 +5,14 @@
 
 > Angular wrapper for the Agora Web RTC client from [Agora.io](https://www.agora.io/en/)
 
+## Compatibility
+
+To use this library, please follow the versioning specified in the following table.
+
+| Angular Version     | 7.x | 8.x |
+| ------------------- | --- | --- |
+| `ngx-agora` Version | 1.x | 2.x |
+
 ## Credits
 
 This package is an enhanced implementation of the [angular-agora-rtc](https://github.com/AgoraIO-Community/Angular-Agora-RTC) library by [@Only1MrAnderson](https://github.com/Only1MrAnderson).
