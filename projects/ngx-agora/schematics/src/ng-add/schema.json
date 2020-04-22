@@ -59,14 +59,6 @@
           {
             "value": "2.6.1",
             "label": "2.6.1  [ Preview: https://www.npmjs.com/package/agora-rtc-sdk/v/2.6.1 ]"
-          },
-          {
-            "value": "2.5.2",
-            "label": "2.5.2  [ Preview: https://www.npmjs.com/package/agora-rtc-sdk/v/2.5.2 ]"
-          },
-          {
-            "value": "2.4.1",
-            "label": "2.4.1  [ Preview: https://www.npmjs.com/package/agora-rtc-sdk/v/2.4.1 ]"
           }
         ]
       }
