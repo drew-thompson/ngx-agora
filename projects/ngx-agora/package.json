@@ -5,7 +5,7 @@
   "peerDependencies": {
     "@angular/common": "^7.2.0",
     "@angular/core": "^7.2.0",
-    "agora-rtc-sdk": "^3.0.2"
+    "agora-rtc-sdk": "^2.6.1"
   },
   "description": "Angular 7 wrapper for Agora RTC client (https://www.agora.io/en/)",
   "main": "ngx-agora.module.ts",
