@@ -9,9 +9,10 @@
 
 To use this library, please follow the versioning specified in the following table.
 
-| Angular Version     | 7.x | 8.x |
-| ------------------- | --- | --- |
-| `ngx-agora` Version | 1.x | 2.x |
+| Angular Version | `ngx-agora` Version |
+| --------------- | ------------------- |
+| 7.x             | 1.x                 |
+| 8.x             | 2.x                 |
 
 ## Credits
 
